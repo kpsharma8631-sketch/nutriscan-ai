@@ -259,13 +259,13 @@ def find_best_matching_db_key(input_food_string):
 st.markdown("""
 <style>
 /* 🚨 REMOVE WHITE HEADER FULLY & EXTRA STRUCTURAL COMPRESSION (FIXED) */
+header { visibility: hidden !important; display: none !important; }
 [data-testid="stHeader"] { display: none !important; height: 0rem !important; }
 [data-testid="stToolbar"] { display: none !important; }
 .main { padding-top: 0rem !important; }
 section[data-testid="stSidebar"] { top: 0 !important; }
 
-/* 🚨 EXTRA FIX FOR LOGO (FIXED) */
-header { visibility: hidden !important; display: none !important; }
+/* 🚨 EXTRA FIX FOR LOGO CORES WITHOUT TOP CUT ERRORS (FIXED) */
 .main .block-container { padding-top: 1rem !important; }
 
 .stApp { background-color: #f8fafc; }
@@ -273,7 +273,7 @@ footer { display: none !important; }
 [data-testid="stSidebarNav"], [data-testid="stSidebarNavItems"] { display: none !important; height: 0px !important; overflow: hidden !important; }
 [data-testid="stSidebarCollapseButton"] { display: flex !important; visibility: visible !important; color: #16a34a !important; background-color: #f0fdf4 !important; border-radius: 50% !important; }
 
-/* 🚨 RE-ENGINEERED BLOCK CONTAINER AND PADDING ALIGNMENTS (FIXED) */
+/* 🚨 RE-ENGINEERED PRODUCTION SPACING LOGIC (FIXED) */
 .block-container {
     padding-top: 1rem !important;
     padding-bottom: 1rem !important;
@@ -282,7 +282,7 @@ footer { display: none !important; }
     max-width: 100% !important;
 }
 
-/* 🚨 BUTTON STYLING CONFIGURATION */
+/* 🚨 BUTTON STYLING CONFIGURATION SYSTEM WIDE */
 div.stButton > button, div[data-testid="stForm"] button {
     background: linear-gradient(to right, #15803d, #22c55e) !important;
     color: white !important;
@@ -313,7 +313,7 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
     font-size: 15px !important;
 }
 
-/* 🚨 LOGIN CONTAINER WIDTH & CENTER BALANCER */
+/* 🚨 LOGIN CONTAINER WIDTH & PERFECT CENTER BALANCER (FIXED) */
 .login-container {
     background: white;
     padding: 35px 40px !important;
@@ -360,6 +360,7 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
 
 # Central Gateway Engine
 if st.session_state.screen == "login":
+    # 🚨 RATIO FIX FOR BALANCED SaaS STRUCTURE (FIXED)
     left, right = st.columns([1.25, 0.75], gap="small")
     with left:
         logo_col, text_col = st.columns([0.15, 0.85])
@@ -389,12 +390,14 @@ if st.session_state.screen == "login":
         col1, col2 = st.columns([1, 1])
         with col1: st.checkbox("Remember me", key="rem_me_key")
         with col2:
+            # 🚨 FORGOT PASSWORD BUTTON CONTAINER WIDTH SYNCED (FIXED)
             if st.button("Forgot Password?", key="forgot_nav_trigger_btn", use_container_width=True):
                 st.session_state.screen = "forgot"
                 st.rerun()
 
         st.write("")
         st.write("")
+        # 🚨 LOGIN BUTTON CONTAINER WIDTH SYNCED (FIXED)
         if st.button("🚀 Login", key="login_btn", use_container_width=True):
             if not email or not password: st.error("⚠️ Access Denied: Enter credentials!")
             else:
@@ -419,6 +422,7 @@ if st.session_state.screen == "login":
                 else: st.error("❌ Invalid Email or Password. Please try again.")
 
         st.markdown("<div style='text-align:center; color:gray; margin-top:12px; margin-bottom:5px;'>───── or continue with ─────</div>", unsafe_allow_html=True)
+        # 🚨 SIGNUP BUTTON CONTAINER WIDTH SYNCED (FIXED)
         if st.button("Don't have an account? Sign Up", key="switch_to_signup_btn", use_container_width=True):
             st.session_state.screen = "signup"
             st.rerun()
@@ -530,7 +534,6 @@ elif st.session_state.screen == "authenticated":
     if session_focus_food and session_focus_food not in FOOD_DATASET:
         session_focus_food = "pizza"
 
-    # Health Score Engine
     calculated_health_score = 80
     score_msg = "Good"
     if st.session_state.user_bmi < 18.5 or st.session_state.user_bmi > 25.0: calculated_health_score -= 15
@@ -675,4 +678,80 @@ elif st.session_state.screen == "authenticated":
 
     # 4. 🔥 CALORIE TRACKER
     elif menu == "🔥 Calorie Tracker":
-        st.markdown("<div class='auth-header-space'></div>
+        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
+        st.markdown("<h2>🔥 Daily Calorie Log & AI Text Assistant Core</h2>", unsafe_allow_html=True)
+        st.write("---")
+
+        st.markdown("<div style='background: white; border: 1px solid #cbd5e1; padding: 25px; border-radius:20px; margin-bottom: 25px;'>", unsafe_allow_html=True)
+        voice_sentence = st.text_input("Type Your Full Meal Consumption Sentence (e.g. 'Maine 2 roti aur daal khai'):", placeholder="🎙 Type what you ate...", key="voice_input_widget")
+        
+        if st.button("🚀 Process & Parse AI Voice Command", key="process_voice_btn"):
+            if voice_sentence.strip() != "":
+                normalized_sentence = voice_sentence.lower()
+                for known_key in FOOD_DATASET.keys():
+                    if known_key.replace("_", " ") in normalized_sentence:
+                        log_manual_calories(st.session_state.user_email, known_key.title().replace("_", " "), FOOD_DATASET[known_key]["calories"])
+                        st.session_state.detected_food = known_key
+                st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        col_t1, col_t2 = st.columns(2)
+        with col_t1:
+            menu_meal = st.selectbox("Select Meal Category Type", ["Breakfast", "Lunch", "Dinner", "Snacks"])
+            cals = st.number_input("Input Calories (kcal)", min_value=10, max_value=2500, value=300)
+            if st.button("Log Meal Entry Now", key="calorie_log_btn"):
+                log_manual_calories(st.session_state.user_email, menu_meal, cals)
+                st.rerun()
+        with col_t2:
+            st.metric("Total Recorded Target Intake Today", f"{current_live_calories} / {st.session_state.user_bmr_target} kcal")
+            # 🚨 CLOSED BRACKET SECURED PERFECTION HERE
+            st.progress(min(current_live_calories / st.session_state.user_bmr_target, 1.0))
+
+    # 5. 💧 WATER TRACKER
+    elif menu == "💧 Water Tracker":
+        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
+        st.markdown("<h2>💧 Hydration Assistant Engine</h2>", unsafe_allow_html=True)
+        st.write("---")
+        st.markdown(f"<h4>Progress Bounds: <b>{current_live_water} out of 8 Glasses</b> tracked inside secure DB logs.</h4>", unsafe_allow_html=True)
+        st.progress(min(current_live_water / 8, 1.0))
+
+        wl, wr = st.columns(2)
+        with wl:
+            if st.button("➕ Add 1 Glass (Log Stream)", key="add_water_glass_btn"):
+                update_daily_water_glasses(st.session_state.user_email, 1)
+                st.rerun()
+        with wr:
+            if st.button("➖ Remove 1 Glass (Log Stream)", key="remove_water_glass_btn") and current_live_water > 0:
+                update_daily_water_glasses(st.session_state.user_email, -1)
+                st.rerun()
+
+    # 12. ⚙️ SETTINGS PANEL
+    elif menu == "⚙️ Settings":
+        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
+        st.markdown("<h2>⚙️ Premium App Configuration Center</h2>", unsafe_allow_html=True)
+        st.write("---")
+        st.markdown("<div class='settings-block-panel'>", unsafe_allow_html=True)
+        set_weight = st.number_input("Update Weight Metric (kg)", min_value=10.0, value=float(st.session_state.get('u_weight_live', 68.0)))
+        set_height = st.number_input("Update Height Metric (cm)", min_value=50.0, value=float(st.session_state.get('u_height_live', 172.0)))
+
+        if st.button("💾 Save Profile Metrics Changes", key="save_metrics_btn"):
+            update_user_metrics_in_db(st.session_state.user_email, set_weight, set_height)
+            st.session_state.u_weight_live = set_weight
+            st.session_state.u_height_live = set_height
+            h_m = set_height / 100.0
+            st.session_state.user_bmi = round(set_weight / (h_m * h_m), 1)
+            st.success("🎉 Biometric metrics updated successfully!")
+            st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        st.markdown("<div class='settings-block-panel'>", unsafe_allow_html=True)
+        st.markdown("### 💥 Hard Data Purge Protocol")
+        if st.button("💥 Purge All Local Scan History Logs", key="purge_btn"):
+            cursor.execute("DELETE FROM food_history WHERE user_email=?", (st.session_state.user_email,))
+            cursor.execute("DELETE FROM calorie_logs WHERE user_email=?", (st.session_state.user_email,))
+            cursor.execute("DELETE FROM water_logs WHERE user_email=?", (st.session_state.user_email,))
+            conn.commit()
+            st.session_state.detected_food = None
+            st.success("💥 Database tables flushed completely!")
+            st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
