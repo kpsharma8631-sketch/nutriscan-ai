@@ -258,6 +258,9 @@ def find_best_matching_db_key(input_food_string):
 # =========================================================
 st.markdown("""
 <style>
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
 /* 🚨 REMOVE WHITE HEADER FULLY & EXTRA STRUCTURAL COMPRESSION */
 [data-testid="stHeader"] { display: none !important; height: 0rem !important; }
 [data-testid="stToolbar"] { display: none !important; }
@@ -358,7 +361,17 @@ div.stButton > button[key*="forgot_nav"] {
     font-size: 13px;
 }
 
-.signup-container-card { background: white; padding: 20px 28px !important; border-radius: 22px; box-shadow: 0px 8px 24px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; width: 100%; max-width: 500px; margin: auto; margin-top: -20px !important; }
+.signup-container-card {
+    background: rgba(255,255,255,0.95);
+    padding: 28px !important;
+    border-radius: 26px;
+    box-shadow: 0px 10px 35px rgba(0,0,0,0.08);
+    border: 1px solid #e2e8f0;
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    backdrop-filter: blur(14px);
+}
 .settings-block-panel { background: white; border: 1px solid #e2e8f0; padding: 30px; border-radius: 24px; margin-bottom: 25px; }
 
 /* 🚨 1. WELCOME HEADINGS COMPACT (FIXED) */
@@ -498,16 +511,25 @@ elif st.session_state.screen == "forgot":
     st.markdown("</div>", unsafe_allow_html=True)
 
 elif st.session_state.screen == "signup":
-    left, right = st.columns([1.25, 0.75], gap="small")
+    left, right = st.columns([1.25, 0.75], gap="medium")
     with left:
         st.markdown("<div style='margin-top:60px;'></div>", unsafe_allow_html=True)
         logo_col_s, text_col_s = st.columns([0.15, 0.85])
         with logo_col_s: render_local_image("logo.png", img_width=65)
         with text_col_s: st.markdown("<div class='logo-text' style='font-size:38px;'>NutriScan <span class='green'>AI</span></div>", unsafe_allow_html=True)
-        st.markdown("<div class='main-heading' style='font-size:48px;'>Join Us For A<br><span class='green'>Healthy Journey!</span></div>", unsafe_allow_html=True)
-        st.write("")
-        st.markdown("<div style='margin-left:-40px; margin-top:-20px;'>", unsafe_allow_html=True)
-        render_local_image("hero.png", img_width=520)
+        st.markdown("""
+<div class='main-heading'>
+Join The Future Of <br>
+<span class='green'>Smart Nutrition</span>
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<div class='subtitle'>
+Track calories, analyze food using AI, monitor health insights and build better eating habits daily.
+</div>
+""", unsafe_allow_html=True)
+        render_local_image("hero.png", img_width=700)
         st.markdown("</div>", unsafe_allow_html=True)
 
     with right:
@@ -515,7 +537,15 @@ elif st.session_state.screen == "signup":
         st.write("")
         st.markdown("<div class='signup-container-card'>", unsafe_allow_html=True)
         st.write("")
-        st.markdown("<h2 style='text-align:center; font-weight:800; color:#111827;'>Create Account</h2>", unsafe_allow_html=True)
+        st.markdown("""
+<h2 style='text-align:center; font-weight:800; color:#111827; margin-bottom:5px;'>
+Create Your Account
+</h2>
+
+<p style='text-align:center; color:#64748b; margin-bottom:25px;'>
+Start your healthy AI-powered journey today
+</p>
+""", unsafe_allow_html=True)
 
         full_name = st.text_input("Full Name Field", placeholder="👤 Enter your full name", label_visibility="collapsed", key="signup_name").strip()
         st.write("")
