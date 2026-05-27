@@ -258,14 +258,13 @@ def find_best_matching_db_key(input_food_string):
 # =========================================================
 st.markdown("""
 <style>
-/* 🚨 REMOVE WHITE HEADER FULLY & EXTRA STRUCTURAL COMPRESSION (FIXED) */
-header { visibility: hidden !important; display: none !important; }
+/* 🚨 REMOVE WHITE HEADER FULLY & EXTRA STRUCTURAL COMPRESSION */
 [data-testid="stHeader"] { display: none !important; height: 0rem !important; }
 [data-testid="stToolbar"] { display: none !important; }
 .main { padding-top: 0rem !important; }
 section[data-testid="stSidebar"] { top: 0 !important; }
 
-/* 🚨 EXTRA FIX FOR LOGO CORES WITHOUT TOP CUT ERRORS (FIXED) */
+header { visibility: hidden !important; display: none !important; }
 .main .block-container { padding-top: 1rem !important; }
 
 .stApp { background-color: #f8fafc; }
@@ -273,7 +272,7 @@ footer { display: none !important; }
 [data-testid="stSidebarNav"], [data-testid="stSidebarNavItems"] { display: none !important; height: 0px !important; overflow: hidden !important; }
 [data-testid="stSidebarCollapseButton"] { display: flex !important; visibility: visible !important; color: #16a34a !important; background-color: #f0fdf4 !important; border-radius: 50% !important; }
 
-/* 🚨 RE-ENGINEERED PRODUCTION SPACING LOGIC (FIXED) */
+/* 🚨 RE-ENGINEERED PRODUCTION SPACING LOGIC */
 .block-container {
     padding-top: 1rem !important;
     padding-bottom: 1rem !important;
@@ -282,7 +281,7 @@ footer { display: none !important; }
     max-width: 100% !important;
 }
 
-/* 🚨 BUTTON STYLING CONFIGURATION SYSTEM WIDE */
+/* 🚨 BUTTON STYLING CONFIGURATION */
 div.stButton > button, div[data-testid="stForm"] button {
     background: linear-gradient(to right, #15803d, #22c55e) !important;
     color: white !important;
@@ -313,7 +312,7 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
     font-size: 15px !important;
 }
 
-/* 🚨 LOGIN CONTAINER WIDTH & PERFECT CENTER BALANCER (FIXED) */
+/* 🚨 LOGIN CONTAINER WIDTH & CENTER BALANCER */
 .login-container {
     background: white;
     padding: 35px 40px !important;
@@ -360,22 +359,29 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
 
 # Central Gateway Engine
 if st.session_state.screen == "login":
-    # 🚨 RATIO FIX FOR BALANCED SaaS STRUCTURE (FIXED)
     left, right = st.columns([1.25, 0.75], gap="small")
     with left:
+        # 🚨 1. NUTRISCAN AI + LOGO NICHE LAO (FIXED)
+        st.markdown("<div style='margin-top:60px;'></div>", unsafe_allow_html=True)
         logo_col, text_col = st.columns([0.15, 0.85])
         with logo_col: render_local_image("logo.png", img_width=75)
         with text_col: st.markdown("<div class='logo-text'>NutriScan <span class='green'>AI</span></div>", unsafe_allow_html=True)
         st.markdown("<div class='main-heading'>Smart Food Choices,<br><span class='green'>Healthy Life!</span></div>", unsafe_allow_html=True)
         st.markdown("<div class='subtitle'>NutriScan AI analyzes your food, predicts health risks and suggests better choices.</div>", unsafe_allow_html=True)
-        st.write("")
+        
+        # 🚨 3. 4 FEATURE BOXES KO NEECHE + LEFT SHIFT (FIXED)
+        st.markdown("<div style='margin-top:30px; margin-left:-20px;'>", unsafe_allow_html=True)
         c1, c2, c3, c4 = st.columns(4)
         c1.markdown("<div class='feature-card'>🧠<br><br><b>AI Food<br>Analysis</b></div>", unsafe_allow_html=True)
         c2.markdown("<div class='feature-card'>❤️<br><br><b>Disease<br>Prediction</b></div>", unsafe_allow_html=True)
         c3.markdown("<div class='feature-card'>📋<br><br><b>Personalized<br>Recs</b></div>", unsafe_allow_html=True)
         c4.markdown("<div class='feature-card'>📈<br><br><b>Health<br>Tracking</b></div>", unsafe_allow_html=True)
-        st.write("")
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+        # 🚨 2. HERO IMAGE LEFT SIDE ME PROPER LAO (FIXED)
+        st.markdown("<div style='margin-left:-40px; margin-top:-20px;'>", unsafe_allow_html=True)
         render_local_image("hero.png", use_column=True)
+        st.markdown("</div>", unsafe_allow_html=True)
 
     with right:
         st.markdown("<div class='login-container'>", unsafe_allow_html=True)
@@ -390,14 +396,12 @@ if st.session_state.screen == "login":
         col1, col2 = st.columns([1, 1])
         with col1: st.checkbox("Remember me", key="rem_me_key")
         with col2:
-            # 🚨 FORGOT PASSWORD BUTTON CONTAINER WIDTH SYNCED (FIXED)
             if st.button("Forgot Password?", key="forgot_nav_trigger_btn", use_container_width=True):
                 st.session_state.screen = "forgot"
                 st.rerun()
 
         st.write("")
         st.write("")
-        # 🚨 LOGIN BUTTON CONTAINER WIDTH SYNCED (FIXED)
         if st.button("🚀 Login", key="login_btn", use_container_width=True):
             if not email or not password: st.error("⚠️ Access Denied: Enter credentials!")
             else:
@@ -422,7 +426,6 @@ if st.session_state.screen == "login":
                 else: st.error("❌ Invalid Email or Password. Please try again.")
 
         st.markdown("<div style='text-align:center; color:gray; margin-top:12px; margin-bottom:5px;'>───── or continue with ─────</div>", unsafe_allow_html=True)
-        # 🚨 SIGNUP BUTTON CONTAINER WIDTH SYNCED (FIXED)
         if st.button("Don't have an account? Sign Up", key="switch_to_signup_btn", use_container_width=True):
             st.session_state.screen = "signup"
             st.rerun()
@@ -461,12 +464,15 @@ elif st.session_state.screen == "forgot":
 elif st.session_state.screen == "signup":
     left, right = st.columns([1.25, 0.75], gap="small")
     with left:
+        st.markdown("<div style='margin-top:60px;'></div>", unsafe_allow_html=True)
         logo_col_s, text_col_s = st.columns([0.15, 0.85])
         with logo_col_s: render_local_image("logo.png", img_width=65)
         with text_col_s: st.markdown("<div class='logo-text' style='font-size:38px;'>NutriScan <span class='green'>AI</span></div>", unsafe_allow_html=True)
         st.markdown("<div class='main-heading' style='font-size:48px;'>Join Us For A<br><span class='green'>Healthy Journey!</span></div>", unsafe_allow_html=True)
         st.write("")
+        st.markdown("<div style='margin-left:-40px; margin-top:-20px;'>", unsafe_allow_html=True)
         render_local_image("hero.png", use_column=True)
+        st.markdown("</div>", unsafe_allow_html=True)
 
     with right:
         st.markdown("<div class='signup-container-card'>", unsafe_allow_html=True)
@@ -503,12 +509,12 @@ elif st.session_state.screen == "authenticated":
     with st.sidebar:
         st.markdown(f"### 🛡️ NutriScan AI System\n👤 **User Active:** `{st.session_state.user_name}`")
         st.write("---")
-        menu = st.sidebar.radio("Navigation Menu",
+        menu = st.radio("Navigation Menu",
                         ["🏠 Home Dashboard", "🥗 Food Analysis", "🧮 BMI Calculator", "🔥 Calorie Tracker",
                          "💧 Water Tracker", "💔 Disease Risk", "🩺 Symptoms & Tests", "💊 Medicines", "📊 Health Analytics",
                          "📜 Food History", "🤖 AI Chatbot", "⚙️ Settings"])
         st.write("---")
-        if st.sidebar.button("🚪 Terminate Session & Logout", key="logout_btn"):
+        if st.button("🚪 Terminate Session & Logout", key="logout_btn"):
             st.session_state.screen = "login"
             st.session_state.user_name = "User"
             st.session_state.detected_food = None
@@ -534,6 +540,7 @@ elif st.session_state.screen == "authenticated":
     if session_focus_food and session_focus_food not in FOOD_DATASET:
         session_focus_food = "pizza"
 
+    # Health Score Engine
     calculated_health_score = 80
     score_msg = "Good"
     if st.session_state.user_bmi < 18.5 or st.session_state.user_bmi > 25.0: calculated_health_score -= 15
@@ -613,7 +620,7 @@ elif st.session_state.screen == "authenticated":
                             except Exception as ex:
                                 log_food_scanned(st.session_state.user_email, "Thali (idli)", 400)
                                 st.session_state.detected_food = "idli"
-                                st.rerun()
+                                r.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
 
         if is_new_user_flag:
@@ -704,7 +711,6 @@ elif st.session_state.screen == "authenticated":
                 st.rerun()
         with col_t2:
             st.metric("Total Recorded Target Intake Today", f"{current_live_calories} / {st.session_state.user_bmr_target} kcal")
-            # 🚨 CLOSED BRACKET SECURED PERFECTION HERE
             st.progress(min(current_live_calories / st.session_state.user_bmr_target, 1.0))
 
     # 5. 💧 WATER TRACKER
