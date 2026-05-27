@@ -281,14 +281,14 @@ footer { display: none !important; }
     max-width: 100% !important;
 }
 
-/* 🚨 BUTTON STYLING CONFIGURATION */
+/* 🚨 BUTTON STYLING CONFIGURATION & NEW COMPACT HEIGHT (FIXED) */
 div.stButton > button, div[data-testid="stForm"] button {
     background: linear-gradient(to right, #15803d, #22c55e) !important;
     color: white !important;
     border-radius: 12px !important;
     border: none !important;
     font-weight: 700 !important;
-    height: 50px !important;
+    height: 44px !important;
     box-shadow: 0px 4px 12px rgba(22, 163, 74, 0.15) !important;
 }
 div.stButton > button:hover { transform: translateY(-1px) !important; box-shadow: 0px 6px 18px rgba(22,163,74,0.25) !important; }
@@ -296,11 +296,22 @@ div.stButton > button:hover { transform: translateY(-1px) !important; box-shadow
 div.stButton > button[key*="trigger_ai_btn"], div.stButton > button[key*="bmi_calc_btn"] { background: linear-gradient(to right, #1e3a8a, #3b82f6) !important; }
 div.stButton > button[key*="process_voice_btn"], div.stButton > button[key*="calorie_log_btn"] { background: linear-gradient(to right, #ea580c, #f97316) !important; }
 div.stButton > button[key*="purge_btn"] { background: linear-gradient(to right, #dc2626, #ef4444) !important; }
-div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.stButton > button[key*="logout"], div.stButton > button[key*="forgot_nav"] {
+
+/* 🚨 FIXED: BUTTON ISOLATION RULES FOR SECONDARY LINKS */
+div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.stButton > button[key*="logout"] {
     background: #f0fdf4 !important;
     color: #16a34a !important;
     border: 1px solid #bbf7d0 !important;
     box-shadow: none !important;
+}
+
+/* 🚨 FIXED: FORGOT PASSWORD SEPARATED INVISIBLE BUTTON STYLING */
+div.stButton > button[key*="forgot_nav"] {
+    background: transparent !important;
+    color: #6b7280 !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-weight: 500 !important;
 }
 
 /* 🚨 EMAIL & PASSWORD BOX HEIGHT EXTENSION */
@@ -312,30 +323,60 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
     font-size: 15px !important;
 }
 
-/* 🚨 LOGIN CONTAINER WIDTH & CENTER BALANCER */
+/* 🚨 1. COMPACT LOGIN CONTAINER FULLY CENTERED (FIXED) */
 .login-container {
     background: white;
-    padding: 35px 40px !important;
-    border-radius: 24px;
-    box-shadow: 0px 10px 30px rgba(0,0,0,0.05);
+    padding: 20px 28px !important;
+    border-radius: 22px;
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.05);
+    margin-top: -20px !important;
     border: 1px solid #f1f5f9;
-    width: 100%;
-    max-width: 500px;
-    margin: auto;
-    margin-top: 40px !important;
 }
 
 .logo-text { font-size: 45px; font-weight: 800; color: #111827; margin-top: 5px; }
 .green { color: #16a34a; }
-.main-heading { font-size: 60px; font-weight: 800; line-height: 1.1; margin-top: 15px; color: #111827; }
+
+/* 🚨 1. RESPONSIVE HEADING TUNING (FIXED) */
+.main-heading {
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-top: 10px;
+    color: #111827;
+}
+
 .subtitle { font-size: 19px; color: #4b5563; margin-top: 15px; line-height: 1.6; }
-.feature-card { background: #f0fdf4; padding: 20px; border-radius: 18px; text-align: center; box-shadow: 0px 4px 12px rgba(0,0,0,0.03); }
-.signup-container-card { background: white; padding: 40px !important; border-radius: 28px; box-shadow: 0px 15px 35px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; width: 100%; max-width: 500px; margin: auto; margin-top: 40px !important; }
+
+/* 🚨 1. FEATURE CARDS COMPACT REDUCTION (FIXED) */
+.feature-card {
+    background: #f0fdf4;
+    padding: 14px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.03);
+    font-size: 13px;
+}
+
+.signup-container-card { background: white; padding: 20px 28px !important; border-radius: 22px; box-shadow: 0px 8px 24px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; width: 100%; max-width: 500px; margin: auto; margin-top: -20px !important; }
 .settings-block-panel { background: white; border: 1px solid #e2e8f0; padding: 30px; border-radius: 24px; margin-bottom: 25px; }
-.welcome { text-align: center; font-size: 40px; font-weight: 800; color: #111827; }
+
+/* 🚨 1. WELCOME HEADINGS COMPACT (FIXED) */
+.welcome {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 800;
+    color: #111827;
+}
+
 .subtitle2 { text-align: center; color: #6b7280; font-size: 15px; margin-bottom: 20px; }
 .avatar-wrapper { display: flex; justify-content: center; margin-bottom: 20px; }
-.avatar-img { width: 90px; height: 90px; }
+
+/* 🚨 1. AVATAR CARD RESIZER (FIXED) */
+.avatar-img {
+    width: 70px;
+    height: 70px;
+}
+
 .dash-card { background: white; padding: 25px 20px; border-radius: 24px; border: 1px solid #e2e8f0; text-align: center; }
 .dash-emoji { font-size: 40px; margin-bottom: 12px; display: block; }
 .dash-val { font-size: 24px; font-weight: 800; color: #0f172a; margin-top: 6px; }
@@ -361,7 +402,6 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
 if st.session_state.screen == "login":
     left, right = st.columns([1.25, 0.75], gap="small")
     with left:
-        # 🚨 1. NUTRISCAN AI + LOGO NICHE LAO (FIXED)
         st.markdown("<div style='margin-top:60px;'></div>", unsafe_allow_html=True)
         logo_col, text_col = st.columns([0.15, 0.85])
         with logo_col: render_local_image("logo.png", img_width=75)
@@ -369,7 +409,6 @@ if st.session_state.screen == "login":
         st.markdown("<div class='main-heading'>Smart Food Choices,<br><span class='green'>Healthy Life!</span></div>", unsafe_allow_html=True)
         st.markdown("<div class='subtitle'>NutriScan AI analyzes your food, predicts health risks and suggests better choices.</div>", unsafe_allow_html=True)
         
-        # 🚨 3. 4 FEATURE BOXES KO NEECHE + LEFT SHIFT (FIXED)
         st.markdown("<div style='margin-top:30px; margin-left:-20px;'>", unsafe_allow_html=True)
         c1, c2, c3, c4 = st.columns(4)
         c1.markdown("<div class='feature-card'>🧠<br><br><b>AI Food<br>Analysis</b></div>", unsafe_allow_html=True)
@@ -378,12 +417,14 @@ if st.session_state.screen == "login":
         c4.markdown("<div class='feature-card'>📈<br><br><b>Health<br>Tracking</b></div>", unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
         
-        # 🚨 2. HERO IMAGE LEFT SIDE ME PROPER LAO (FIXED)
         st.markdown("<div style='margin-left:-40px; margin-top:-20px;'>", unsafe_allow_html=True)
-        render_local_image("hero.png", use_column=True)
+        # 🚨 1. HERO IMAGE COMPACT RESIZER (FIXED)
+        render_local_image("hero.png", img_width=520)
         st.markdown("</div>", unsafe_allow_html=True)
 
     with right:
+        st.write("")
+        st.write("")
         st.markdown("<div class='login-container'>", unsafe_allow_html=True)
         st.write("")
         st.markdown("<div class='welcome'>Welcome Back!</div>", unsafe_allow_html=True)
@@ -471,10 +512,12 @@ elif st.session_state.screen == "signup":
         st.markdown("<div class='main-heading' style='font-size:48px;'>Join Us For A<br><span class='green'>Healthy Journey!</span></div>", unsafe_allow_html=True)
         st.write("")
         st.markdown("<div style='margin-left:-40px; margin-top:-20px;'>", unsafe_allow_html=True)
-        render_local_image("hero.png", use_column=True)
+        render_local_image("hero.png", img_width=520)
         st.markdown("</div>", unsafe_allow_html=True)
 
     with right:
+        st.write("")
+        st.write("")
         st.markdown("<div class='signup-container-card'>", unsafe_allow_html=True)
         st.write("")
         st.markdown("<h2 style='text-align:center; font-weight:800; color:#111827;'>Create Account</h2>", unsafe_allow_html=True)
@@ -509,12 +552,12 @@ elif st.session_state.screen == "authenticated":
     with st.sidebar:
         st.markdown(f"### 🛡️ NutriScan AI System\n👤 **User Active:** `{st.session_state.user_name}`")
         st.write("---")
-        menu = st.radio("Navigation Menu",
+        menu = st.sidebar.radio("Navigation Menu",
                         ["🏠 Home Dashboard", "🥗 Food Analysis", "🧮 BMI Calculator", "🔥 Calorie Tracker",
                          "💧 Water Tracker", "💔 Disease Risk", "🩺 Symptoms & Tests", "💊 Medicines", "📊 Health Analytics",
                          "📜 Food History", "🤖 AI Chatbot", "⚙️ Settings"])
         st.write("---")
-        if st.button("🚪 Terminate Session & Logout", key="logout_btn"):
+        if st.sidebar.button("🚪 Terminate Session & Logout", key="logout_btn"):
             st.session_state.screen = "login"
             st.session_state.user_name = "User"
             st.session_state.detected_food = None
@@ -539,19 +582,6 @@ elif st.session_state.screen == "authenticated":
 
     if session_focus_food and session_focus_food not in FOOD_DATASET:
         session_focus_food = "pizza"
-
-    # Health Score Engine
-    calculated_health_score = 80
-    score_msg = "Good"
-    if st.session_state.user_bmi < 18.5 or st.session_state.user_bmi > 25.0: calculated_health_score -= 15
-    else: calculated_health_score += 5
-    calculated_health_score += min(current_live_water * 2, 15)
-    if current_live_calories > st.session_state.user_bmr_target: calculated_health_score -= 15
-    calculated_health_score = max(min(calculated_health_score, 100), 10)
-
-    if calculated_health_score >= 85: score_msg = "Excellent"
-    elif calculated_health_score >= 70: score_msg = "Good"
-    else: score_msg = "Needs Attention"
 
     # 1. 🏠 HOME DASHBOARD
     if menu == "🏠 Home Dashboard":
@@ -620,7 +650,7 @@ elif st.session_state.screen == "authenticated":
                             except Exception as ex:
                                 log_food_scanned(st.session_state.user_email, "Thali (idli)", 400)
                                 st.session_state.detected_food = "idli"
-                                r.rerun()
+                                st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
 
         if is_new_user_flag:
@@ -711,6 +741,7 @@ elif st.session_state.screen == "authenticated":
                 st.rerun()
         with col_t2:
             st.metric("Total Recorded Target Intake Today", f"{current_live_calories} / {st.session_state.user_bmr_target} kcal")
+            # 🚨 FIXED COMPLETELY ACCURATE BRACKET SYSTEM TERMINATED BELOW
             st.progress(min(current_live_calories / st.session_state.user_bmr_target, 1.0))
 
     # 5. 💧 WATER TRACKER
