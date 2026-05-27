@@ -783,4 +783,4 @@ elif st.session_state.screen == "authenticated":
             st.session_state.detected_food = None
             st.success("💥 Sandbox tables cleared completely!")
             st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True
+        st.markdown("</div>", unsafe_allow_html=True)
