@@ -270,7 +270,9 @@ section[data-testid="stSidebar"] { top: 0 !important; }
 header { visibility: hidden !important; display: none !important; }
 .main .block-container { padding-top: 1rem !important; }
 
-.stApp { background-color: #f8fafc; }
+.stApp {
+    background: linear-gradient(to bottom right, #f8fafc, #ecfdf5);
+}
 footer { display: none !important; }
 [data-testid="stSidebarNav"], [data-testid="stSidebarNavItems"] { display: none !important; height: 0px !important; overflow: hidden !important; }
 [data-testid="stSidebarCollapseButton"] { display: flex !important; visibility: visible !important; color: #16a34a !important; background-color: #f0fdf4 !important; border-radius: 50% !important; }
@@ -286,15 +288,20 @@ footer { display: none !important; }
 
 /* 🚨 BUTTON STYLING CONFIGURATION & NEW COMPACT HEIGHT (FIXED) */
 div.stButton > button, div[data-testid="stForm"] button {
-    background: linear-gradient(to right, #15803d, #22c55e) !important;
+    background: linear-gradient(to right, #16a34a, #22c55e) !important;
     color: white !important;
-    border-radius: 12px !important;
+    border-radius: 14px !important;
     border: none !important;
     font-weight: 700 !important;
-    height: 44px !important;
-    box-shadow: 0px 4px 12px rgba(22, 163, 74, 0.15) !important;
+    height: 50px !important;
+    font-size: 16px !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0px 6px 16px rgba(34,197,94,0.22) !important;
 }
-div.stButton > button:hover { transform: translateY(-1px) !important; box-shadow: 0px 6px 18px rgba(22,163,74,0.25) !important; }
+div.stButton > button:hover {
+    transform: translateY(-2px) scale(1.01) !important;
+    box-shadow: 0px 10px 25px rgba(22,163,74,0.28) !important;
+}
 
 div.stButton > button[key*="trigger_ai_btn"], div.stButton > button[key*="bmi_calc_btn"] { background: linear-gradient(to right, #1e3a8a, #3b82f6) !important; }
 div.stButton > button[key*="process_voice_btn"], div.stButton > button[key*="calorie_log_btn"] { background: linear-gradient(to right, #ea580c, #f97316) !important; }
@@ -319,22 +326,29 @@ div.stButton > button[key*="forgot_nav"] {
 
 /* 🚨 EMAIL & PASSWORD BOX HEIGHT EXTENSION */
 .stTextInput input, .stNumberInput input {
-    height: 50px !important;
-    border-radius: 12px !important;
-    border: 1px solid #cbd5e1 !important;
-    padding: 10px !important;
+    height: 54px !important;
+    border-radius: 14px !important;
+    border: 1px solid #dbeafe !important;
+    padding: 12px !important;
     font-size: 15px !important;
+    background: #f8fafc !important;
+}
+
+.stTextInput input:focus {
+    border: 1px solid #22c55e !important;
+    box-shadow: 0px 0px 0px 4px rgba(34,197,94,0.15) !important;
 }
 
 /* 🚨 1. COMPACT LOGIN CONTAINER FULLY CENTERED (FIXED) */
 .login-container {
-    background: white;
-    padding: 20px 28px !important;
-    border-radius: 22px;
-    box-shadow: 0px 8px 24px rgba(0,0,0,0.05);
+    background: rgba(255,255,255,0.95);
+    padding: 24px 30px !important;
+    border-radius: 28px;
+    box-shadow: 0px 12px 35px rgba(0,0,0,0.08);
     margin-top: -20px !important;
-    margin-left: -30px !important;
-    border: 1px solid #f1f5f9;
+    margin-left: -40px !important;
+    border: 1px solid #e2e8f0;
+    backdrop-filter: blur(14px);
 }
 
 .logo-text { font-size: 45px; font-weight: 800; color: #111827; margin-top: 5px; }
@@ -414,12 +428,9 @@ div.stButton > button[key*="forgot_nav"] {
 
 # Central Gateway Engine
 if st.session_state.screen == "login":
-    left, right = st.columns([1.25, 0.75], gap="medium")
+    left, right = st.columns([1.25, 0.75], gap="small")
     with left:
-        st.markdown("<div style='margin-top:60px;'></div>", unsafe_allow_html=True)
-        logo_col, text_col = st.columns([0.15, 0.85])
-        with logo_col: render_local_image("logo.png", img_width=75)
-        with text_col: st.markdown("<div class='logo-text'>NutriScan <span class='green'>AI</span></div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-ogo-text'>NutriScan <span class='green'>AI</span></div>", unsafe_allow_html=True)
         st.markdown("<div class='main-heading'>Smart Food Choices,<br><span class='green'>Healthy Life!</span></div>", unsafe_allow_html=True)
         st.markdown("<div class='subtitle'>NutriScan AI analyzes your food, predicts health risks and suggests better choices.</div>", unsafe_allow_html=True)
         
