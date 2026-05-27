@@ -269,10 +269,8 @@ footer { display: none !important; }
     margin-top: -70px !important;
 }
 
-/* 🚨 BUTTON FULL WIDTH STRETCH FIX & ACTIONS SYSTEM */
+/* 🚨 BUTTON STYLING CONFIGURATION */
 div.stButton > button, div[data-testid="stForm"] button {
-    width: 100% !important;
-    display: block !important;
     background: linear-gradient(to right, #15803d, #22c55e) !important;
     color: white !important;
     border-radius: 12px !important;
@@ -302,17 +300,17 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
     font-size: 15px !important;
 }
 
-/* 🚨 LOGIN CONTAINER WIDTH & MARGIN AUTO BALANCER */
+/* 🚨 2. LOGIN CONTAINER WIDTH & CENTER BALANCER (COMPLETE REPLACE) */
 .login-container {
     background: white;
     padding: 35px 40px !important;
     border-radius: 24px;
     box-shadow: 0px 10px 30px rgba(0,0,0,0.05);
     border: 1px solid #f1f5f9;
-    width: 100% !important;
-    max-width: 520px !important;
-    margin: auto !important;
-    margin-top: 20px !important;
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    margin-top: 40px !important;
 }
 
 .logo-text { font-size: 45px; font-weight: 800; color: #111827; margin-top: 5px; }
@@ -320,7 +318,7 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
 .main-heading { font-size: 60px; font-weight: 800; line-height: 1.1; margin-top: 15px; color: #111827; }
 .subtitle { font-size: 19px; color: #4b5563; margin-top: 15px; line-height: 1.6; }
 .feature-card { background: #f0fdf4; padding: 20px; border-radius: 18px; text-align: center; box-shadow: 0px 4px 12px rgba(0,0,0,0.03); }
-.signup-container-card { background: white; padding: 40px !important; border-radius: 28px; box-shadow: 0px 15px 35px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; width: 100% !important; max-width: 520px !important; margin: auto !important; margin-top: 20px !important; }
+.signup-container-card { background: white; padding: 40px !important; border-radius: 28px; box-shadow: 0px 15px 35px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; width: 100%; max-width: 500px; margin: auto; margin-top: 40px !important; }
 .settings-block-panel { background: white; border: 1px solid #e2e8f0; padding: 30px; border-radius: 24px; margin-bottom: 25px; }
 .welcome { text-align: center; font-size: 40px; font-weight: 800; color: #111827; }
 .subtitle2 { text-align: center; color: #6b7280; font-size: 15px; margin-bottom: 20px; }
@@ -349,8 +347,8 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
 
 # Central Gateway Engine
 if st.session_state.screen == "login":
-    # 🚨 1. REAL FIXED LAYOUT BALANCE VIA BALANCED EQUAL COLUMNS
-    left, right = st.columns([1, 1], gap="medium")
+    # 🚨 1. RATIO FIX FOR BALANCED SaaS STRUCTURE
+    left, right = st.columns([1.25, 0.75], gap="small")
     with left:
         logo_col, text_col = st.columns([0.15, 0.85])
         with logo_col: render_local_image("logo.png", img_width=75)
@@ -368,7 +366,6 @@ if st.session_state.screen == "login":
 
     with right:
         st.markdown("<div class='login-container'>", unsafe_allow_html=True)
-        # 🚨 SABSE IMPORTANT FIX: SPACING FORWARDER ADAPTED
         st.write("")
         st.markdown("<div class='welcome'>Welcome Back!</div>", unsafe_allow_html=True)
         st.markdown("<div class='subtitle2'>Login to continue your health journey</div>", unsafe_allow_html=True)
@@ -380,14 +377,15 @@ if st.session_state.screen == "login":
         col1, col2 = st.columns([1, 1])
         with col1: st.checkbox("Remember me", key="rem_me_key")
         with col2:
-            if st.button("Forgot Password?", key="forgot_nav_trigger_btn"):
+            # 🚨 FORGOT PASSWORD BUTTON FIXED
+            if st.button("Forgot Password?", key="forgot_nav_trigger_btn", use_container_width=True):
                 st.session_state.screen = "forgot"
                 st.rerun()
 
-        # 🚨 9. LOGIN BUTTON SPACING FIX
         st.write("")
         st.write("")
-        if st.button("🚀 Login", key="login_btn"):
+        # 🚨 LOGIN BUTTON FIXED
+        if st.button("🚀 Login", key="login_btn", use_container_width=True):
             if not email or not password: st.error("⚠️ Access Denied: Enter credentials!")
             else:
                 user = login_user(email, password)
@@ -411,7 +409,8 @@ if st.session_state.screen == "login":
                 else: st.error("❌ Invalid Email or Password. Please try again.")
 
         st.markdown("<div style='text-align:center; color:gray; margin-top:12px; margin-bottom:5px;'>───── or continue with ─────</div>", unsafe_allow_html=True)
-        if st.button("Don't have an account? Sign Up", key="switch_to_signup_btn"):
+        # 🚨 SIGNUP BUTTON FIXED
+        if st.button("Don't have an account? Sign Up", key="switch_to_signup_btn", use_container_width=True):
             st.session_state.screen = "signup"
             st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
@@ -448,7 +447,7 @@ elif st.session_state.screen == "forgot":
 
 elif st.session_state.screen == "signup":
     # 🚨 Balanced grid row implementation for signup view node
-    left, right = st.columns([1, 1], gap="medium")
+    left, right = st.columns([1.25, 0.75], gap="small")
     with left:
         logo_col_s, text_col_s = st.columns([0.15, 0.85])
         with logo_col_s: render_local_image("logo.png", img_width=65)
@@ -583,7 +582,6 @@ elif st.session_state.screen == "authenticated":
                                 st.rerun()
                     else:
                         with st.spinner("✨ Initializing Gemini Multimodal Plate Architecture..."):
-                            # 🚨 6. GEMINI API KEY SECURITY CHECK
                             client = get_live_gemini_client()
                             if client is None:
                                 st.error("⚠️ Gemini API key not configured.")
@@ -629,7 +627,6 @@ elif st.session_state.screen == "authenticated":
                 st.write("#### 📊 Individual Nutrition Portion Charts:")
                 thali_items = m_res.get("items", [])
                 
-                # 🚨 8. EMPTY THALI CRASH FIX
                 if len(thali_items) > 0:
                     cols_grid = st.columns(len(thali_items))
                 else:
@@ -655,18 +652,6 @@ elif st.session_state.screen == "authenticated":
                 with res_right:
                     m_data = food_info.get("macros", {})
                     st.plotly_chart(go.Figure(data=[go.Pie(labels=['Protein', 'Carbs', 'Fats'], values=[get_clean_macro_integer(m_data, "protein"), get_clean_macro_integer(m_data, "carbs"), get_clean_macro_integer(m_data, "fat")], hole=.5)]), use_container_width=True)
-
-    # 3. 🧮 BMI CALCULATOR
-    elif menu == "🧮 BMI Calculator":
-        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
-        st.markdown("<h2>🧮 Interactive BMI Calculator</h2>", unsafe_allow_html=True)
-        st.write("---")
-        w = st.number_input("Enter Weight (kg)", min_value=10.0, max_value=200.0, value=70.0)
-        h = st.number_input("Enter Height (cm)", min_value=100.0, max_value=250.0, value=170.0)
-        if st.button("Calculate BMI Matrix", key="bmi_calc_btn"):
-            bmi = w / ((h / 100) ** 2)
-            st.session_state.user_bmi = round(bmi, 1)
-            st.metric(label="Your Calculated BMI Index Node", value=f"{bmi:.2f}")
 
     # 4. 🔥 CALORIE TRACKER
     elif menu == "🔥 Calorie Tracker":
@@ -696,131 +681,4 @@ elif st.session_state.screen == "authenticated":
                 st.rerun()
         with col_t2:
             st.metric("Total Recorded Target Intake Today", f"{current_live_calories} / {st.session_state.user_bmr_target} kcal")
-            st.progress(min(current_live_calories / st.session_state.user_bmr_target, 1.0))
-
-    # 5. 💧 WATER TRACKER
-    elif menu == "💧 Water Tracker":
-        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
-        st.markdown("<h2>💧 Hydration Assistant Engine</h2>", unsafe_allow_html=True)
-        st.write("---")
-        st.markdown(f"<h4>Progress Bounds: <b>{current_live_water} out of 8 Glasses</b> tracked inside secure DB logs.</h4>", unsafe_allow_html=True)
-        st.progress(min(current_live_water / 8, 1.0))
-
-        wl, wr = st.columns(2)
-        with wl:
-            if st.button("➕ Add 1 Glass (Log Stream)", key="add_water_glass_btn"):
-                update_daily_water_glasses(st.session_state.user_email, 1)
-                st.rerun()
-        with wr:
-            if st.button("➖ Remove 1 Glass (Log Stream)", key="remove_water_glass_btn") and current_live_water > 0:
-                update_daily_water_glasses(st.session_state.user_email, -1)
-                st.rerun()
-
-    # 6. 💔 DISEASE RISK
-    elif menu == "💔 Disease Risk":
-        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
-        st.markdown("<h2>💔 Chronic Disease Risk Profile Analysis</h2>", unsafe_allow_html=True)
-        st.write("---")
-        if is_new_user_flag: st.info("📂 Risk models are empty. Log food entries inside the Scanner first!")
-        else:
-            food_info = FOOD_DATASET[session_focus_food]
-            for disease in food_info.get("diseases", []):
-                st.error(f"🛑 **Condition Matrix:** {disease.get('name')} — **Severity Tier:** *{disease.get('risk')}*")
-
-    # 7. 🩺 SYMPTOMS & TESTS
-    elif menu == "🩺 Symptoms & Tests":
-        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
-        st.markdown("<h2>🩺 Recommended Preventive Diagnostics & Symptom Map</h2>", unsafe_allow_html=True)
-        st.write("---")
-        if is_new_user_flag: st.info("📂 Diagnostic layers waiting for scanned metadata assets.")
-        else:
-            food_info = FOOD_DATASET[session_focus_food]
-            for test in food_info.get("tests", []):
-                st.success(f"🧪 **{test.get('name')}**: {test.get('desc')}")
-
-    # 8. 💊 MEDICINES
-    elif menu == "💊 Medicines":
-        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
-        st.markdown("<h2>💊 General Health Supplements & Reminders</h2>", unsafe_allow_html=True)
-        st.write("---")
-        st.info("🌿 Baseline safe execution frames - Maintain daily trace minerals and vitamins optimization routines.")
-
-    # 9. 📊 HEALTH ANALYTICS
-    elif menu == "📊 Health Analytics":
-        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
-        st.markdown("<h2>📊 Premium Health History Overview & Analytical Trends</h2>", unsafe_allow_html=True)
-        st.write("---")
-        if is_new_user_flag: st.info("📊 Health Analytics requires at least one scan record history entry.")
-        else:
-            dates_list, calories_list = fetch_weekly_calorie_trend_from_db(st.session_state.user_email)
-            fig = go.Figure(data=go.Scatter(x=dates_list, y=calories_list, mode='lines+markers', line=dict(color='#dc2626', width=4)))
-            st.plotly_chart(fig, use_container_width=True)
-
-    # 10. 📜 FOOD HISTORY
-    elif menu == "📜 Food History":
-        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
-        st.markdown("<h2>📜 Logged Scan Archives (SQLite3 Database Stream)</h2>", unsafe_allow_html=True)
-        st.write("---")
-        cursor.execute("SELECT id, user_email, food_name, calories, date_time FROM food_history WHERE user_email=? ORDER BY id DESC", (st.session_state.user_email,))
-        records = cursor.fetchall()
-        if records:
-            for row in records:
-                st.markdown(f"<div class='history-item-card'><span style='float: right; color: #64748b;'>🕒 Logged: {row[4]}</span><h3>🍔 Food: {str(row[2]).replace('_', ' ').title()}</h3><p style='color: #16a34a; font-weight: 700;'>🔥 Payload: {row[3]} kcal</p></div>", unsafe_allow_html=True)
-        else: st.info("📂 Transaction log layers are empty.")
-
-    # 11. 🤖 AI CHATBOT
-    elif menu == "🤖 AI Chatbot":
-        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
-        st.markdown("<h2>🤖 NutriBot - Personal Health Companion</h2>", unsafe_allow_html=True)
-        st.write("---")
-        for chat in st.session_state.chat_history:
-            if chat["role"] == "user": st.markdown(f"<div class='chat-bubble-user'>👤 You: {chat['text']}</div>", unsafe_allow_html=True)
-            else: st.markdown(f"<div class='chat-bubble-bot'>🤖 NutriBot: {chat['text']}</div>", unsafe_allow_html=True)
-
-        chat_input = st.text_input("Ask nutritional guidelines directly to NutriBot:", key="chat_input_box")
-        if st.button("Query Matrix Dispatch"):
-            if chat_input.strip() != "":
-                st.session_state.chat_history.append({"role": "user", "text": chat_input})
-                # 🚨 6. GEMINI API KEY SECURITY CHECK
-                client = get_live_gemini_client()
-                if client is None:
-                    st.error("⚠️ Gemini API key not configured.")
-                    st.stop()
-                try:
-                    response = client.models.generate_content(model='gemini-2.5-flash', contents=f"You are NutriBot, short answer: {chat_input}")
-                    bot_response = response.text.strip()
-                except: bot_response = "Maintaining nutritional tracking matrices perfectly guarantees optimal balance!"
-                st.session_state.chat_history.append({"role": "bot", "text": bot_response})
-                st.rerun()
-
-    # 12. ⚙️ SETTINGS PANEL
-    elif menu == "⚙️ Settings":
-        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
-        st.markdown("<h2>⚙️ Premium App Configuration Center</h2>", unsafe_allow_html=True)
-        st.write("---")
-        st.markdown("<div class='settings-block-panel'>", unsafe_allow_html=True)
-        set_weight = st.number_input("Update Weight Metric (kg)", min_value=10.0, value=float(st.session_state.get('u_weight_live', 68.0)))
-        set_height = st.number_input("Update Height Metric (cm)", min_value=50.0, value=float(st.session_state.get('u_height_live', 172.0)))
-
-        if st.button("💾 Save Profile Metrics Changes", key="save_metrics_btn"):
-            update_user_metrics_in_db(st.session_state.user_email, set_weight, set_height)
-            st.session_state.u_weight_live = set_weight
-            st.session_state.u_height_live = set_height
-            h_m = set_height / 100.0
-            st.session_state.user_bmi = round(set_weight / (h_m * h_m), 1)
-            st.success("🎉 Biometric metrics updated successfully!")
-            st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
-
-        st.markdown("<div class='settings-block-panel'>", unsafe_allow_html=True)
-        st.markdown("### 💥 Hard Data Purge Protocol")
-        # 🚨 7. PURGE TUPLE FORMAT ADJUSTMENT
-        if st.button("💥 Purge All Local Scan History Logs", key="purge_btn"):
-            cursor.execute("DELETE FROM food_history WHERE user_email=?", (st.session_state.user_email,))
-            cursor.execute("DELETE FROM calorie_logs WHERE user_email=?", (st.session_state.user_email,))
-            cursor.execute("DELETE FROM water_logs WHERE user_email=?", (st.session_state.user_email,))
-            conn.commit()
-            st.session_state.detected_food = None
-            st.success("💥 Database tables flushed completely!")
-            st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
+            st.progress(min(current_live_calories / st.session_state.user_bmr_
