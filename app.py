@@ -300,7 +300,7 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
     font-size: 15px !important;
 }
 
-/* 🚨 2. LOGIN CONTAINER WIDTH & CENTER BALANCER (COMPLETE REPLACE) */
+/* 🚨 LOGIN CONTAINER WIDTH & CENTER BALANCER */
 .login-container {
     background: white;
     padding: 35px 40px !important;
@@ -377,14 +377,12 @@ if st.session_state.screen == "login":
         col1, col2 = st.columns([1, 1])
         with col1: st.checkbox("Remember me", key="rem_me_key")
         with col2:
-            # 🚨 FORGOT PASSWORD BUTTON FIXED
             if st.button("Forgot Password?", key="forgot_nav_trigger_btn", use_container_width=True):
                 st.session_state.screen = "forgot"
                 st.rerun()
 
         st.write("")
         st.write("")
-        # 🚨 LOGIN BUTTON FIXED
         if st.button("🚀 Login", key="login_btn", use_container_width=True):
             if not email or not password: st.error("⚠️ Access Denied: Enter credentials!")
             else:
@@ -409,7 +407,6 @@ if st.session_state.screen == "login":
                 else: st.error("❌ Invalid Email or Password. Please try again.")
 
         st.markdown("<div style='text-align:center; color:gray; margin-top:12px; margin-bottom:5px;'>───── or continue with ─────</div>", unsafe_allow_html=True)
-        # 🚨 SIGNUP BUTTON FIXED
         if st.button("Don't have an account? Sign Up", key="switch_to_signup_btn", use_container_width=True):
             st.session_state.screen = "signup"
             st.rerun()
@@ -446,7 +443,6 @@ elif st.session_state.screen == "forgot":
     st.markdown("</div>", unsafe_allow_html=True)
 
 elif st.session_state.screen == "signup":
-    # 🚨 Balanced grid row implementation for signup view node
     left, right = st.columns([1.25, 0.75], gap="small")
     with left:
         logo_col_s, text_col_s = st.columns([0.15, 0.85])
@@ -491,12 +487,12 @@ elif st.session_state.screen == "authenticated":
     with st.sidebar:
         st.markdown(f"### 🛡️ NutriScan AI System\n👤 **User Active:** `{st.session_state.user_name}`")
         st.write("---")
-        menu = st.radio("Navigation Menu",
+        menu = st.sidebar.radio("Navigation Menu",
                         ["🏠 Home Dashboard", "🥗 Food Analysis", "🧮 BMI Calculator", "🔥 Calorie Tracker",
                          "💧 Water Tracker", "💔 Disease Risk", "🩺 Symptoms & Tests", "💊 Medicines", "📊 Health Analytics",
                          "📜 Food History", "🤖 AI Chatbot", "⚙️ Settings"])
         st.write("---")
-        if st.button("🚪 Terminate Session & Logout", key="logout_btn"):
+        if st.sidebar.button("🚪 Terminate Session & Logout", key="logout_btn"):
             st.session_state.screen = "login"
             st.session_state.user_name = "User"
             st.session_state.detected_food = None
@@ -521,19 +517,6 @@ elif st.session_state.screen == "authenticated":
 
     if session_focus_food and session_focus_food not in FOOD_DATASET:
         session_focus_food = "pizza"
-
-    # Health Score Engine
-    calculated_health_score = 80
-    score_msg = "Good"
-    if st.session_state.user_bmi < 18.5 or st.session_state.user_bmi > 25.0: calculated_health_score -= 15
-    else: calculated_health_score += 5
-    calculated_health_score += min(current_live_water * 2, 15)
-    if current_live_calories > st.session_state.user_bmr_target: calculated_health_score -= 15
-    calculated_health_score = max(min(calculated_health_score, 100), 10)
-
-    if calculated_health_score >= 85: score_msg = "Excellent"
-    elif calculated_health_score >= 70: score_msg = "Good"
-    else: score_msg = "Needs Attention"
 
     # 1. 🏠 HOME DASHBOARD
     if menu == "🏠 Home Dashboard":
@@ -653,6 +636,18 @@ elif st.session_state.screen == "authenticated":
                     m_data = food_info.get("macros", {})
                     st.plotly_chart(go.Figure(data=[go.Pie(labels=['Protein', 'Carbs', 'Fats'], values=[get_clean_macro_integer(m_data, "protein"), get_clean_macro_integer(m_data, "carbs"), get_clean_macro_integer(m_data, "fat")], hole=.5)]), use_container_width=True)
 
+    # 3. 🧮 BMI CALCULATOR
+    elif menu == "🧮 BMI Calculator":
+        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
+        st.markdown("<h2>🧮 Interactive BMI Calculator</h2>", unsafe_allow_html=True)
+        st.write("---")
+        w = st.number_input("Enter Weight (kg)", min_value=10.0, max_value=200.0, value=70.0)
+        h = st.number_input("Enter Height (cm)", min_value=100.0, max_value=250.0, value=170.0)
+        if st.button("Calculate BMI Matrix", key="bmi_calc_btn"):
+            bmi = w / ((h / 100) ** 2)
+            st.session_state.user_bmi = round(bmi, 1)
+            st.metric(label="Your Calculated BMI Index Node", value=f"{bmi:.2f}")
+
     # 4. 🔥 CALORIE TRACKER
     elif menu == "🔥 Calorie Tracker":
         st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
@@ -681,4 +676,54 @@ elif st.session_state.screen == "authenticated":
                 st.rerun()
         with col_t2:
             st.metric("Total Recorded Target Intake Today", f"{current_live_calories} / {st.session_state.user_bmr_target} kcal")
-            st.progress(min(current_live_calories / st.session_state.user_bmr_
+            # 🚨 SYNTAX CRASH ALIGNMENT RESOLVED ACCURATELY BY CLOSING BRACKET NODE BELOW
+            st.progress(min(current_live_calories / st.session_state.user_bmr_target, 1.0))
+
+    # 5. 💧 WATER TRACKER
+    elif menu == "💧 Water Tracker":
+        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
+        st.markdown("<h2>💧 Hydration Assistant Engine</h2>", unsafe_allow_html=True)
+        st.write("---")
+        st.markdown(f"<h4>Progress Bounds: <b>{current_live_water} out of 8 Glasses</b> tracked inside secure DB logs.</h4>", unsafe_allow_html=True)
+        st.progress(min(current_live_water / 8, 1.0))
+
+        wl, wr = st.columns(2)
+        with wl:
+            if st.button("➕ Add 1 Glass (Log Stream)", key="add_water_glass_btn"):
+                update_daily_water_glasses(st.session_state.user_email, 1)
+                st.rerun()
+        with wr:
+            if st.button("➖ Remove 1 Glass (Log Stream)", key="remove_water_glass_btn") and current_live_water > 0:
+                update_daily_water_glasses(st.session_state.user_email, -1)
+                st.rerun()
+
+    # 12. ⚙️ SETTINGS PANEL
+    elif menu == "⚙️ Settings":
+        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
+        st.markdown("<h2>⚙️ Premium App Configuration Center</h2>", unsafe_allow_html=True)
+        st.write("---")
+        st.markdown("<div class='settings-block-panel'>", unsafe_allow_html=True)
+        set_weight = st.number_input("Update Weight Metric (kg)", min_value=10.0, value=float(st.session_state.get('u_weight_live', 68.0)))
+        set_height = st.number_input("Update Height Metric (cm)", min_value=50.0, value=float(st.session_state.get('u_height_live', 172.0)))
+
+        if st.button("💾 Save Profile Metrics Changes", key="save_metrics_btn"):
+            update_user_metrics_in_db(st.session_state.user_email, set_weight, set_height)
+            st.session_state.u_weight_live = set_weight
+            st.session_state.u_height_live = set_height
+            h_m = set_height / 100.0
+            st.session_state.user_bmi = round(set_weight / (h_m * h_m), 1)
+            st.success("🎉 Biometric metrics updated successfully!")
+            st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        st.markdown("<div class='settings-block-panel'>", unsafe_allow_html=True)
+        st.markdown("### 💥 Hard Data Purge Protocol")
+        if st.button("💥 Purge All Local Scan History Logs", key="purge_btn"):
+            cursor.execute("DELETE FROM food_history WHERE user_email=?", (st.session_state.user_email,))
+            cursor.execute("DELETE FROM calorie_logs WHERE user_email=?", (st.session_state.user_email,))
+            cursor.execute("DELETE FROM water_logs WHERE user_email=?", (st.session_state.user_email,))
+            conn.commit()
+            st.session_state.detected_food = None
+            st.success("💥 Database tables flushed completely!")
+            st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
