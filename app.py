@@ -246,27 +246,30 @@ def find_best_matching_db_key(input_food_string):
     return None
 
 # =========================================================
-# 🔥 NEW MERGED CORPORATE PREMIUM UI STYLESHEET
+# 🔥 ULTIMATE COMBINED MASTER PRECISE CSS THEME
 # =========================================================
 st.markdown("""
 <style>
+/* 🚨 REMOVE WHITE HEADER FULLY & TOP WHITE GAP CORES */
+header { visibility: hidden !important; display: none !important; }
+[data-testid="stHeader"] { display: none !important; }
+[data-testid="stToolbar"] { display: none !important; }
+
 .stApp { background-color: #f8fafc; }
 footer { display: none !important; }
 [data-testid="stSidebarNav"], [data-testid="stSidebarNavItems"] { display: none !important; height: 0px !important; overflow: hidden !important; }
 [data-testid="stSidebarCollapseButton"] { display: flex !important; visibility: visible !important; color: #16a34a !important; background-color: #f0fdf4 !important; border-radius: 50% !important; }
 
-/* 🚨 1. TOP WHITE GAP ABHI BHI HAI (FIXED) */
-header { visibility: hidden !important; }
-[data-testid="stHeader"] { display: none !important; }
-[data-testid="stToolbar"] { display: none !important; }
+/* 🚨 REMOVE EXTRA SPACE FROM TOP BLOCK CONTAINER */
 .block-container {
     padding-top: 0rem !important;
+    padding-bottom: 1rem !important;
     padding-left: 3rem !important;
     padding-right: 3rem !important;
-    margin-top: -55px !important;
+    margin-top: -70px !important;
 }
 
-/* 🚨 2. BUTTON FULL WIDTH FIX (FIXED) */
+/* 🚨 BUTTON FULL WIDTH STRETCH FIX & ACTIONS SYSTEM */
 div.stButton > button, div[data-testid="stForm"] button {
     width: 100% !important;
     display: block !important;
@@ -290,7 +293,7 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
     box-shadow: none !important;
 }
 
-/* 🚨 3. EMAIL & PASSWORD BOX HEIGHT EXPANSION (FIXED) */
+/* 🚨 EMAIL & PASSWORD BOX HEIGHT EXTENSION */
 .stTextInput input, .stNumberInput input {
     height: 50px !important;
     border-radius: 12px !important;
@@ -299,14 +302,17 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
     font-size: 15px !important;
 }
 
-/* 🚨 4. LOGIN BOX POSITION UPGRADE (FIXED) */
+/* 🚨 LOGIN CONTAINER WIDTH & MARGIN AUTO BALANCER */
 .login-container {
     background: white;
     padding: 35px 40px !important;
     border-radius: 24px;
     box-shadow: 0px 10px 30px rgba(0,0,0,0.05);
     border: 1px solid #f1f5f9;
-    margin-top: -20px !important;
+    width: 100% !important;
+    max-width: 520px !important;
+    margin: auto !important;
+    margin-top: 20px !important;
 }
 
 .logo-text { font-size: 45px; font-weight: 800; color: #111827; margin-top: 5px; }
@@ -314,7 +320,7 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
 .main-heading { font-size: 60px; font-weight: 800; line-height: 1.1; margin-top: 15px; color: #111827; }
 .subtitle { font-size: 19px; color: #4b5563; margin-top: 15px; line-height: 1.6; }
 .feature-card { background: #f0fdf4; padding: 20px; border-radius: 18px; text-align: center; box-shadow: 0px 4px 12px rgba(0,0,0,0.03); }
-.signup-container-card { background: white; padding: 40px !important; border-radius: 28px; box-shadow: 0px 15px 35px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; margin-top: -20px !important; }
+.signup-container-card { background: white; padding: 40px !important; border-radius: 28px; box-shadow: 0px 15px 35px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; width: 100% !important; max-width: 520px !important; margin: auto !important; margin-top: 20px !important; }
 .settings-block-panel { background: white; border: 1px solid #e2e8f0; padding: 30px; border-radius: 24px; margin-bottom: 25px; }
 .welcome { text-align: center; font-size: 40px; font-weight: 800; color: #111827; }
 .subtitle2 { text-align: center; color: #6b7280; font-size: 15px; margin-bottom: 20px; }
@@ -323,9 +329,7 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
 .dash-card { background: white; padding: 25px 20px; border-radius: 24px; border: 1px solid #e2e8f0; text-align: center; }
 .dash-emoji { font-size: 40px; margin-bottom: 12px; display: block; }
 .dash-val { font-size: 24px; font-weight: 800; color: #0f172a; margin-top: 6px; }
-.dash-lbl { font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; }
-.substitute-box-card { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 20px; border-radius: 18px; border: 1px solid #bbf7d0; margin-top: 15px; }
-.scanner-card { background: white; border: 1px solid #e2e8f0; padding: 25px; border-radius: 24px; box-shadow: 0px 4px 20px rgba(0,0,0,0.02); }
+.dash-lbl { font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; }
 .history-item-card { background: white !important; padding: 18px 24px !important; border-radius: 16px !important; border-left: 5px solid #16a34a !important; margin-bottom: 12px !important; }
 .chat-bubble-user { background-color: #e2e8f0; padding: 12px 16px; border-radius: 16px 16px 0px 16px; margin-bottom: 10px; text-align: right; color: #1e293b; }
 .chat-bubble-bot { background-color: #f0fdf4; padding: 12px 16px; border-radius: 16px 16px 16px 0px; margin-bottom: 10px; border: 1px solid #bbf7d0; color: #14532d; }
@@ -334,19 +338,19 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
 .secure-grid-card-node p { margin: 0; font-size: 12px; color: #64748b; line-height: 1.4; }
 .secure-grid-card-node strong { font-size: 14px; color: #0f172a; display: block; margin-bottom: 4px; }
 
-/* 🚨 10. MOBILE RESPONSIVE FIX */
 @media (max-width: 768px) {
     .main-heading { font-size: 38px !important; }
     .logo-text { font-size: 30px !important; }
     .feature-card { padding: 10px !important; }
-    .login-container, .signup-container-card { padding: 20px !important; margin-top: 0px !important; }
+    .login-container, .signup-container-card { padding: 20px !important; margin-top: 10px !important; }
 }
 </style>
 """, unsafe_allow_html=True)
 
 # Central Gateway Engine
 if st.session_state.screen == "login":
-    left, right = st.columns([1.1, 0.9], gap="large")
+    # 🚨 1. REAL FIXED LAYOUT BALANCE VIA BALANCED EQUAL COLUMNS
+    left, right = st.columns([1, 1], gap="medium")
     with left:
         logo_col, text_col = st.columns([0.15, 0.85])
         with logo_col: render_local_image("logo.png", img_width=75)
@@ -364,6 +368,8 @@ if st.session_state.screen == "login":
 
     with right:
         st.markdown("<div class='login-container'>", unsafe_allow_html=True)
+        # 🚨 SABSE IMPORTANT FIX: SPACING FORWARDER ADAPTED
+        st.write("")
         st.markdown("<div class='welcome'>Welcome Back!</div>", unsafe_allow_html=True)
         st.markdown("<div class='subtitle2'>Login to continue your health journey</div>", unsafe_allow_html=True)
         st.markdown("<div class='avatar-wrapper'><img class='avatar-img' src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'></div>", unsafe_allow_html=True)
@@ -441,7 +447,8 @@ elif st.session_state.screen == "forgot":
     st.markdown("</div>", unsafe_allow_html=True)
 
 elif st.session_state.screen == "signup":
-    left, right = st.columns([1.0, 1.0], gap="large")
+    # 🚨 Balanced grid row implementation for signup view node
+    left, right = st.columns([1, 1], gap="medium")
     with left:
         logo_col_s, text_col_s = st.columns([0.15, 0.85])
         with logo_col_s: render_local_image("logo.png", img_width=65)
@@ -452,6 +459,7 @@ elif st.session_state.screen == "signup":
 
     with right:
         st.markdown("<div class='signup-container-card'>", unsafe_allow_html=True)
+        st.write("")
         st.markdown("<h2 style='text-align:center; font-weight:800; color:#111827;'>Create Account</h2>", unsafe_allow_html=True)
 
         full_name = st.text_input("Full Name Field", placeholder="👤 Enter your full name", label_visibility="collapsed", key="signup_name").strip()
@@ -515,6 +523,7 @@ elif st.session_state.screen == "authenticated":
     if session_focus_food and session_focus_food not in FOOD_DATASET:
         session_focus_food = "pizza"
 
+    # Health Score Engine
     calculated_health_score = 80
     score_msg = "Good"
     if st.session_state.user_bmi < 18.5 or st.session_state.user_bmi > 25.0: calculated_health_score -= 15
@@ -574,7 +583,7 @@ elif st.session_state.screen == "authenticated":
                                 st.rerun()
                     else:
                         with st.spinner("✨ Initializing Gemini Multimodal Plate Architecture..."):
-                            # 🚨 6. GEMINI SAFETY CHECK
+                            # 🚨 6. GEMINI API KEY SECURITY CHECK
                             client = get_live_gemini_client()
                             if client is None:
                                 st.error("⚠️ Gemini API key not configured.")
@@ -666,7 +675,7 @@ elif st.session_state.screen == "authenticated":
         st.write("---")
 
         st.markdown("<div style='background: white; border: 1px solid #cbd5e1; padding: 25px; border-radius:20px; margin-bottom: 25px;'>", unsafe_allow_html=True)
-        voice_sentence = st.text_input("Type Your Full Meal Consumption Sentence (e.g. 'Maine 2 roti aur daal khai'):", placeholder="🎙 Say what you ate...", key="voice_input_widget")
+        voice_sentence = st.text_input("Type Your Full Meal Consumption Sentence (e.g. 'Maine 2 roti aur daal khai'):", placeholder="🎙 Type what you ate...", key="voice_input_widget")
         
         if st.button("🚀 Process & Parse AI Voice Command", key="process_voice_btn"):
             if voice_sentence.strip() != "":
@@ -772,7 +781,7 @@ elif st.session_state.screen == "authenticated":
         if st.button("Query Matrix Dispatch"):
             if chat_input.strip() != "":
                 st.session_state.chat_history.append({"role": "user", "text": chat_input})
-                # 🚨 6. GEMINI SAFETY CHECK
+                # 🚨 6. GEMINI API KEY SECURITY CHECK
                 client = get_live_gemini_client()
                 if client is None:
                     st.error("⚠️ Gemini API key not configured.")
@@ -805,7 +814,7 @@ elif st.session_state.screen == "authenticated":
 
         st.markdown("<div class='settings-block-panel'>", unsafe_allow_html=True)
         st.markdown("### 💥 Hard Data Purge Protocol")
-        # 🚨 7. PURGE BUTTON FIX
+        # 🚨 7. PURGE TUPLE FORMAT ADJUSTMENT
         if st.button("💥 Purge All Local Scan History Logs", key="purge_btn"):
             cursor.execute("DELETE FROM food_history WHERE user_email=?", (st.session_state.user_email,))
             cursor.execute("DELETE FROM calorie_logs WHERE user_email=?", (st.session_state.user_email,))
