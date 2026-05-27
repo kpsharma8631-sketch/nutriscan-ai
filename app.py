@@ -318,7 +318,7 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
 
 # Central Gateway Engine
 if st.session_state.screen == "login":
-    left, right = st.columns([1, 1] if st.responsive else [1.1, 0.9], gap="medium")
+    left, right = st.columns([1.1, 0.9], gap="medium")
     with left:
         logo_col, text_col = st.columns([0.2, 0.8])
         with logo_col: render_local_image("logo.png", img_width=75)
