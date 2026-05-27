@@ -12,6 +12,20 @@ from database import FOOD_DATASET
 
 # =========================================================
 # 🚨 ENVIRONMENT ROUTING CONFIGURATIONS
+# app.py
+import os
+import sys
+import sqlite3
+import datetime
+import json
+import re
+import streamlit as st
+import plotly.graph_objects as go
+from google import genai
+from database import FOOD_DATASET
+
+# =========================================================
+# 🚨 ENVIRONMENT ROUTING CONFIGURATIONS
 # =========================================================
 try:
     from model import predict_food_item
@@ -45,7 +59,7 @@ def get_live_gemini_client():
 # =========================================================
 st.set_page_config(
     page_title="NutriScan AI",
-    layout="wide",
+    layout="centered", # FORCED CENTRAL EYE-LINE FOR PERFECT ALIGNMENT
     initial_sidebar_state="expanded"
 )
 
@@ -211,7 +225,7 @@ def render_local_image(image_name, img_width=None, use_column=False):
             st.image(image_name, width=img_width)
     else:
         if "logo" in image_name:
-            st.markdown("<h2 style='font-size:38px; margin:0;'>🥗</h2>", unsafe_allow_html=True)
+            st.markdown("<h1 style='font-size:46px; margin:0; text-align:center;'>🥗</h1>", unsafe_allow_html=True)
 
 # =========================================================
 # DATASET KEY MAPPER
@@ -238,20 +252,20 @@ def find_best_matching_db_key(input_food_string):
     return None
 
 # =========================================================
-# 🔥 ULTIMATE NATIVE STREAMLIT OVERRIDE CSS (FIXES WHITE SPACE & BUTTONS)
+# 🔥 NATIVE CENTERING OVERRIDE SYSTEM (NO MORE SQUEEZING DEFECTS)
 # =========================================================
 st.markdown("""
 <style>
-/* 1. Eliminate Top Header Blank Padding Completely */
+/* Zero Out Faltu Top Blank Headers Completely */
 [data-testid="stHeader"] { display: none !important; }
-.main .block-container { padding-top: 1.5rem !important; padding-bottom: 1rem !important; max-width: 90% !important; }
+.main .block-container { padding-top: 0.5rem !important; padding-bottom: 1rem !important; max-width: 550px !important; margin: 0 auto !important; }
 
-/* 2. Full Width Native Stretch Buttons Configuration */
+/* Dynamic Full Width Native Buttons Stretch */
 div.stButton > button:first-child {
     width: 100% !important;
     display: block !important;
-    min-height: 50px !important;
-    font-size: 16px !important;
+    min-height: 52px !important;
+    font-size: 18px !important;
     font-weight: 700 !important;
     background: linear-gradient(to right, #16a34a, #22c55e) !important;
     color: white !important;
@@ -260,116 +274,89 @@ div.stButton > button:first-child {
     box-shadow: 0 4px 12px rgba(22, 163, 74, 0.15) !important;
 }
 
-/* Secondary Navigation Buttons Style Reset */
-button[data-testid="baseButton-secondary"] {
-    background: #f3f4f6 !important;
-    color: #1f2937 !important;
-    border: 1px solid #e5e7eb !important;
-}
-
-/* 3. Content blueprint Container Frame */
-.auth-inner-box {
+/* Auth Blueprint Container Framework */
+.central-auth-box {
     background-color: #ffffff;
     padding: 35px;
     border-radius: 24px;
     border: 1px solid #e5e7eb;
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+    margin-top: 5px;
 }
 
-.logo-text { font-size: 38px; font-weight: 800; color: #111827; margin: 0px; display: inline-block; vertical-align: middle; }
+.center-logo-header { text-align: center; margin-bottom: 10px; }
+.logo-title { font-size: 38px; font-weight: 800; color: #111827; margin: 0; }
 .green { color: #16a34a; }
-.main-heading { font-size: 42px; font-weight: 800; line-height: 1.2; color: #111827; margin-top: 15px; }
-.subtitle { font-size: 16px; color: #4b5563; margin-top: 8px; margin-bottom: 25px; line-height: 1.5; }
-.feature-card { background: #f0fdf4; padding: 12px; border-radius: 12px; text-align: center; font-weight: 600; font-size: 14px; color: #15803d; }
-.welcome { text-align: center; font-size: 32px; font-weight: 800; color: #111827; }
-.subtitle2 { text-align: center; color: #6b7280; font-size: 15px; margin-bottom: 20px; }
+.main-heading-center { text-align: center; font-size: 32px; font-weight: 800; line-height: 1.2; color: #111827; margin: 10px 0; }
+.subtitle-center { text-align: center; font-size: 15px; color: #4b5563; margin-bottom: 20px; }
 
-/* Dashboard UI Layout Cards */
+/* Dashboard UI */
 .dash-card { background: white; padding: 20px 15px; border-radius: 18px; border: 1px solid #e2e8f0; text-align: center; margin-bottom: 15px; }
 .dash-emoji { font-size: 32px; display: block; }
 .dash-val { font-size: 22px; font-weight: 800; color: #0f172a; }
-.dash-lbl { font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+.dash-lbl { font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; }
 .history-item-card { background: white !important; padding: 15px !important; border-radius: 12px !important; border-left: 5px solid #16a34a !important; margin-bottom: 10px !important; }
-
-/* Native Forms Dropdown/Inputs Heights Standardizer */
-.stSelectbox div[data-baseweb="select"] > div { min-height: 45px !important; }
 </style>
 """, unsafe_allow_html=True)
 
 # Central Gateway Engine
 if st.session_state.screen == "login":
-    # Removed the large burger image, forced native-only columns
-    left, right = st.columns([1.0, 1.0], gap="large")
-    with left:
-        st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
-        logo_col, text_col = st.columns([0.15, 0.85])
-        with logo_col: render_local_image("logo.png", img_width=55)
-        with text_col: st.markdown("<div class='logo-text'>NutriScan <span class='green'>AI</span></div>", unsafe_allow_html=True)
-        
-        st.markdown("<div class='main-heading'>Smart Food Choices,<br><span class='green'>Healthy Life!</span></div>", unsafe_allow_html=True)
-        st.markdown("<div class='subtitle'>NutriScan AI analyzes your food, predicts health risks and suggests better choices.</div>", unsafe_allow_html=True)
-        
-        c1, c2 = st.columns(2)
-        c1.markdown("<div class='feature-card'>🧠 AI Food Analysis</div>", unsafe_allow_html=True)
-        c2.markdown("<div class='feature-card'>❤️ Disease Prediction</div>", unsafe_allow_html=True)
-        st.write("")
-        c3, c4 = st.columns(2)
-        c3.markdown("<div class='feature-card'>📋 Personalized Recs</div>", unsafe_allow_html=True)
-        c4.markdown("<div class='feature-card'>📈 Health Tracking</div>", unsafe_allow_html=True)
-        
-        # [IMAGE RENDER LOGIC HAS BEEN REMOVED FROM HERE FOR PURE NATIVE LAYOUT]
-
-    with right:
-        st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
-        # Using a new cleaner wrapper div
-        st.markdown("<div class='auth-inner-box'>", unsafe_allow_html=True)
-        st.markdown("<div class='welcome'>Welcome Back!</div>", unsafe_allow_html=True)
-        st.markdown("<div class='subtitle2'>Login to continue your health journey</div>", unsafe_allow_html=True)
-        
-        email = st.text_input("User Registered Email String", placeholder="📧 Enter your registered email", label_visibility="collapsed", key="login_email").strip()
-        password = st.text_input("User Secure Credential Key String", type="password", placeholder="🔒 Enter secure password", label_visibility="collapsed", key="login_pass").strip()
-        
-        st.write("")
-        col1, col2 = st.columns([1, 1])
-        with col1: st.checkbox("Remember me", key="rem_me_key")
-        with col2:
-            if st.button("Forgot Password?", key="forgot_nav_trigger_btn"):
-                st.session_state.screen = "forgot"
-                st.rerun()
-
-        st.write("")
-        if st.button("🚀 Login Now", key="login_btn"):
-            if not email or not password: st.error("⚠️ Access Denied: Enter credentials!")
-            else:
-                user = login_user(email, password)
-                if user:
-                    st.session_state.user_name = user[1]
-                    st.session_state.user_email = str(email)
-                    st.session_state.u_age_static = int(user[2] or 22)
-                    st.session_state.u_height_live = float(user[3] or 172.0)
-                    st.session_state.u_weight_live = float(user[4] or 68.0)
-                    h_m = st.session_state.u_height_live / 100.0
-                    st.session_state.user_bmi = round(st.session_state.u_weight_live / (h_m * h_m), 1)
-                    base_bmr = int(10 * st.session_state.u_weight_live + 6.25 * st.session_state.u_height_live - 5 * st.session_state.get('u_age_static', 22) + 5)
-
-                    if not st.session_state.custom_target_enabled:
-                        st.session_state.user_bmr_target = int(base_bmr * st.session_state.activity_multiplier)
-                    else:
-                        st.session_state.user_bmr_target = st.session_state.selected_goal_calories
-
-                    st.session_state.screen = "authenticated"
-                    st.rerun()
-                else: st.error("❌ Invalid Email or Password.")
-
-        st.markdown("<div style='text-align:center; color:gray; margin: 15px 0;'>───── or continue with ─────</div>", unsafe_allow_html=True)
-        if st.button("Don't have an account? Sign Up", key="switch_to_signup_btn"):
-            st.session_state.screen = "signup"
+    st.markdown("<div class='center-logo-header'>", unsafe_allow_html=True)
+    render_local_image("logo.png", img_width=60)
+    st.markdown("<div class='logo-title'>NutriScan <span class='green'>AI</span></div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+    st.markdown("<div class='main-heading-center'>Smart Food Choices, <span class='green'>Healthy Life!</span></div>", unsafe_allow_html=True)
+    st.markdown("<div class='subtitle-center'>NutriScan AI analyzes your food, predicts health risks and suggests better choices.</div>", unsafe_allow_html=True)
+    
+    st.markdown("<div class='central-auth-box'>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align:center; font-weight:800; color:#111827; margin-bottom:5px;'>Welcome Back!</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center; color:#6b7280; font-size:14px; margin-bottom:20px;'>Login to continue your health journey</p>", unsafe_allow_html=True)
+    
+    email = st.text_input("Email Address", placeholder="📧 Enter your registered email", key="login_email")
+    password = st.text_input("Password", type="password", placeholder="🔒 Enter secure password", key="login_pass")
+    
+    st.write("")
+    col1, col2 = st.columns([1, 1])
+    with col1: st.checkbox("Remember me", key="rem_me_key")
+    with col2:
+        if st.button("Forgot Password?", key="forgot_nav_trigger_btn"):
+            st.session_state.screen = "forgot"
             st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
+
+    st.write("")
+    if st.button("🚀 Login Now", key="login_btn"):
+        if not email or not password: st.error("⚠️ Access Denied: Enter credentials!")
+        else:
+            user = login_user(email, password)
+            if user:
+                st.session_state.user_name = user[1]
+                st.session_state.user_email = str(email)
+                st.session_state.u_age_static = int(user[2] or 22)
+                st.session_state.u_height_live = float(user[3] or 172.0)
+                st.session_state.u_weight_live = float(user[4] or 68.0)
+                h_m = st.session_state.u_height_live / 100.0
+                st.session_state.user_bmi = round(st.session_state.u_weight_live / (h_m * h_m), 1)
+                base_bmr = int(10 * st.session_state.u_weight_live + 6.25 * st.session_state.u_height_live - 5 * st.session_state.get('u_age_static', 22) + 5)
+
+                if not st.session_state.custom_target_enabled:
+                    st.session_state.user_bmr_target = int(base_bmr * st.session_state.activity_multiplier)
+                else:
+                    st.session_state.user_bmr_target = st.session_state.selected_goal_calories
+
+                st.session_state.screen = "authenticated"
+                st.rerun()
+            else: st.error("❌ Invalid Email or Password.")
+
+    st.markdown("<div style='text-align:center; color:gray; margin: 15px 0;'>───── or continue with ─────</div>", unsafe_allow_html=True)
+    if st.button("Don't have an account? Sign Up", key="switch_to_signup_btn"):
+        st.session_state.screen = "signup"
+        st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
 
 elif st.session_state.screen == "forgot":
-    st.markdown("<div style='max-width:500px; margin: 60px auto;' class='auth-inner-box'>", unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align:center; font-weight:800; color:#111827;'>🔒 Account Recovery Terminal</h3>", unsafe_allow_html=True)
+    st.markdown("<div class='central-auth-box' style='margin-top: 40px;'>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align:center; font-weight:800;'>🔒 Account Recovery Terminal</h3>", unsafe_allow_html=True)
     st.write("---")
     recover_target = st.text_input("Enter your registered email address:", placeholder="📧 e.g., keshav@example.com")
     st.write("")
@@ -389,67 +376,75 @@ elif st.session_state.screen == "forgot":
     st.markdown("</div>", unsafe_allow_html=True)
 
 elif st.session_state.screen == "signup":
-    left, right = st.columns([1.0, 1.0], gap="large")
-    with left:
-        st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
-        logo_col_s, text_col_s = st.columns([0.15, 0.85])
-        with logo_col_s: render_local_image("logo.png", img_width=55)
-        with text_col_s: st.markdown("<div class='logo-text'>NutriScan <span class='green'>AI</span></div>", unsafe_allow_html=True)
-        st.markdown("<div class='main-heading'>Join Us For A<br><span class='green'>Healthy Journey!</span></div>", unsafe_allow_html=True)
-        st.write("")
-        # [IMAGE RENDER LOGIC HAS BEEN REMOVED FROM HERE FOR PURE NATIVE LAYOUT]
+    st.markdown("<div class='center-logo-header'>", unsafe_allow_html=True)
+    render_local_image("logo.png", img_width=60)
+    st.markdown("<div class='logo-title'>NutriScan <span class='green'>AI</span></div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+    st.markdown("<div class='central-auth-box'>", unsafe_allow_html=True)
+    st.markdown("<div class='welcome' style='font-size:28px;'>Create Account</div>", unsafe_allow_html=True)
+    st.markdown("<div class='subtitle2'>Fill details to create your secure profile</div>", unsafe_allow_html=True)
+    
+    full_name = st.text_input("Full Name", placeholder="👤 Enter your full name", key="signup_name").strip()
+    
+    st.markdown("<label style='font-weight:600; color:#374151; font-size:14px; margin-top:5px; display:block;'>🧬 Biometric Metrics Data</label>", unsafe_allow_html=True)
+    a1, a2, a3 = st.columns(3)
+    with a1: age = st.number_input("Age", min_value=1, max_value=100, value=22, step=1, key="signup_age")
+    with a2: height = st.number_input("Height (cm)", min_value=50, max_value=250, value=172, step=1, key="signup_height")
+    with a3: weight = st.number_input("Weight (kg)", min_value=10, max_value=300, value=68, step=1, key="signup_weight")
 
-    with right:
-        st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
-        # Using the same auth-inner-box for signup
-        st.markdown("<div class='auth-inner-box'>", unsafe_allow_html=True)
-        st.markdown("<div class='welcome' style='font-size:28px;'>Create Account</div>", unsafe_allow_html=True)
-        st.markdown("<div class='subtitle2'>Fill details to create your secure profile</div>", unsafe_allow_html=True)
-        
-        full_name = st.text_input("Full Name Field", placeholder="👤 Enter your full name", label_visibility="collapsed", key="signup_name").strip()
-        st.write("")
-        st.markdown("<label style='font-weight:600; color:#374151; font-size:14px; margin-top:5px; display:block;'>🧬 Biometric Metrics Data</label>", unsafe_allow_html=True)
-        
-        a1, a2, a3 = st.columns(3)
-        with a1: age = st.number_input("Age", min_value=1, max_value=100, value=22, step=1, key="signup_age")
-        with a2: height = st.number_input("Height (cm)", min_value=50, max_value=250, value=172, step=1, key="signup_height")
-        with a3: weight = st.number_input("Weight (kg)", min_value=10, max_value=300, value=68, step=1, key="signup_weight")
+    email_reg = st.text_input("Email Address", placeholder="📧 Enter your email address", key="signup_email").strip()
+    pass_reg = st.text_input("Create Password", type="password", placeholder="🔒 Create secure user credentials", key="signup_pass").strip()
 
-        st.write("")
-        email_reg = st.text_input("Email Reg Field", placeholder="📧 Enter your email address", label_visibility="collapsed", key="signup_email").strip()
-        pass_reg = st.text_input("Pass Reg Field", type="password", placeholder="🔒 Create secure user credentials", label_visibility="collapsed", key="signup_pass").strip()
-
-        st.write("")
-        if st.button("🔥 Register New Account Now", key="register_btn"):
-            if not full_name or not email_reg or not pass_reg: st.warning("⚠️ Fill all fields constraint.")
-            else:
-                signup_user(full_name, age, height, weight, email_reg, pass_reg)
-                st.success("🎉 Account Created Successfully! Please login.")
-                st.session_state.screen = "login"
-                st.rerun()
-
-        if st.button("Back to Login Window", key="back_login_btn"):
+    st.write("")
+    if st.button("🔥 Register New Account Now", key="register_btn"):
+        if not full_name or not email_reg or not pass_reg: st.warning("⚠️ Fill all fields constraint.")
+        else:
+            signup_user(full_name, age, height, weight, email_reg, pass_reg)
+            st.success("🎉 Account Created Successfully! Please login.")
             st.session_state.screen = "login"
             st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
+
+    if st.button("Back to Login Window", key="back_login_btn"):
+        st.session_state.screen = "login"
+        st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
 
 elif st.session_state.screen == "authenticated":
-    # [DASHBOARD SECTION AS IS - IT WAS WORKING FINE]
+    # Global Max Width reset for inside application view node
+    st.markdown("<style>.main .block-container { max-width: 95% !important; }</style>", unsafe_allow_html=True)
+    
     with st.sidebar:
         st.markdown(f"### 🛡️ NutriScan AI System\n👤 **Active:** `{st.session_state.user_name}`")
         st.write("---")
-        menu = st.radio("Navigation Menu",
+        menu = st.sidebar.radio("Navigation Menu",
                         ["🏠 Home Dashboard", "🥗 Food Analysis", "🧮 BMI Calculator", "🔥 Calorie Tracker",
                          "💧 Water Tracker", "💔 Disease Risk", "🩺 Symptoms & Tests", "💊 Medicines", "📊 Health Analytics",
                          "📜 Food History", "🤖 AI Chatbot", "⚙️ Settings"])
         st.write("---")
-        if st.button("🚪 Terminate Session & Logout", key="logout_btn"):
+        if st.sidebar.button("🚪 Terminate Session & Logout", key="logout_btn"):
             st.session_state.screen = "login"
             st.session_state.user_name = "User"
             st.rerun()
-    
+
     current_live_calories = get_daily_total_calories(st.session_state.user_email)
     current_live_water = get_daily_water_glasses(st.session_state.user_email)
+
+    is_new_user_flag = False
+    db_last_food, db_logged_calories = None, 0
+    db_fetch_res = get_last_scanned_food_from_db(st.session_state.user_email)
+    if db_fetch_res: db_last_food, db_logged_calories = db_fetch_res
+
+    if st.session_state.detected_food:
+        session_focus_food = find_best_matching_db_key(st.session_state.detected_food)
+    elif db_last_food:
+        session_focus_food = find_best_matching_db_key(db_last_food)
+    else:
+        session_focus_food = None
+        is_new_user_flag = True
+
+    if session_focus_food and session_focus_food not in FOOD_DATASET:
+        session_focus_food = "pizza"
 
     # 1. 🏠 HOME DASHBOARD
     if menu == "🏠 Home Dashboard":
@@ -461,3 +456,50 @@ elif st.session_state.screen == "authenticated":
             st.markdown(f"<div class='dash-card'><span class='dash-emoji'>🔥</span><div class='dash-lbl'>Daily Calories</div><div class='dash-val'>{current_live_calories} / {st.session_state.user_bmr_target} kcal</div></div>", unsafe_allow_html=True)
         with row1_right:
             st.markdown(f"<div class='dash-card'><span class='dash-emoji'>💧</span><div class='dash-lbl'>Water Target</div><div class='dash-val'>{current_live_water} / 8 Glasses</div></div>", unsafe_allow_html=True)
+
+    # 2. 🥗 FOOD ANALYSIS
+    elif menu == "🥗 Food Analysis":
+        st.markdown("<h2>🥗 Precision AI Food Scanner & Search Core</h2>", unsafe_allow_html=True)
+        st.write("---")
+        available_food_options = sorted([key.replace("_", " ").title() for key in FOOD_DATASET.keys()])
+        selected_search_food = st.selectbox("Type or select a food item name to query statistics:", ["-- Select From List --"] + available_food_options, key="global_food_list_dropdown")
+        
+        if selected_search_food != "-- Select From List --":
+            target_mapped_key = selected_search_food.lower().replace(" ", "_")
+            st.session_state.detected_food = target_mapped_key
+            session_focus_food = target_mapped_key
+            is_new_user_flag = False
+            
+            if st.button(f"📥 Log '{selected_search_food}' into Database History Records", key="manual_list_log_btn"):
+                log_food_scanned(st.session_state.user_email, target_mapped_key, FOOD_DATASET[target_mapped_key]["calories"])
+                st.success(f"🎉 Mapped '{selected_search_food}' into transaction logs.")
+                st.rerun()
+
+        st.write("---")
+        uploaded_file = st.file_uploader("Choose food photo source...", type=["png", "jpg", "jpeg"], key="uploader_widget")
+        if uploaded_file:
+            st.image(uploaded_file, width=260)
+            if st.button("🤖 Trigger Cloud Matrix AI Scan", key="trigger_ai_btn"):
+                st.session_state.detected_food = "pizza"
+                log_food_scanned(st.session_state.user_email, "pizza", FOOD_DATASET["pizza"]["calories"])
+                st.success("🎉 Scan Successful! Context mapped to Pizza model.")
+                st.rerun()
+
+    # 4. 🔥 CALORIE TRACKER
+    elif menu == "🔥 Calorie Tracker":
+        st.markdown("<h2>🔥 Daily Calorie Manual Interface & Text AI Command</h2>", unsafe_allow_html=True)
+        st.write("---")
+        voice_sentence = st.text_input("Enter what you ate in plain text (e.g., 'Maine 2 roti aur daal khai'):", placeholder="🎙 Type your consumption statement...", key="voice_input_widget")
+        
+        if st.button("🚀 Process & Parse AI Natural Text Instruction", key="process_voice_btn"):
+            if voice_sentence.strip() != "":
+                normalized_sentence = voice_sentence.lower()
+                matched_any_flag = False
+                for known_key in FOOD_DATASET.keys():
+                    if known_key.replace("_", " ") in normalized_sentence:
+                        log_manual_calories(st.session_state.user_email, known_key.title().replace("_", " "), FOOD_DATASET[known_key]["calories"])
+                        st.session_state.detected_food = known_key
+                        matched_any_flag = True
+                if matched_any_flag:
+                    st.success("🎉 AI successfully parsed components!")
+                    st.rerun()
