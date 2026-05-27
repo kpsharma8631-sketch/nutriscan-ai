@@ -45,7 +45,7 @@ def get_live_gemini_client():
     return None
 
 # =========================================================
-# PAGE CONFIG & 🚀 SABSE IMPORTANT GLOBAL APP MARGIN TRICK
+# PAGE CONFIG & GLOBAL APP MARGIN TRICK
 # =========================================================
 st.set_page_config(
     page_title="NutriScan AI",
@@ -258,7 +258,7 @@ def find_best_matching_db_key(input_food_string):
 # =========================================================
 st.markdown("""
 <style>
-/* 🚨 REMOVE WHITE HEADER FULLY & TOP WHITE GAP CORES (FIXED) */
+/* 🚨 REMOVE WHITE HEADER FULLY & OPTIMIZED SPACING CORES (FIXED) */
 header { visibility: hidden !important; display: none !important; }
 [data-testid="stHeader"] { display: none !important; height: 0rem !important; }
 [data-testid="stToolbar"] { display: none !important; }
@@ -271,13 +271,13 @@ footer { display: none !important; }
 [data-testid="stSidebarNav"], [data-testid="stSidebarNavItems"] { display: none !important; height: 0px !important; overflow: hidden !important; }
 [data-testid="stSidebarCollapseButton"] { display: flex !important; visibility: visible !important; color: #16a34a !important; background-color: #f0fdf4 !important; border-radius: 50% !important; }
 
-/* 🚨 REMOVE EXTRA SPACE FROM TOP BLOCK CONTAINER (FIXED) */
+/* 🚨 REPLACED TOP SPACE OVERRIDE - NO COMPRESSION GAPS */
 .block-container {
-    padding-top: 0rem !important;
+    padding-top: 1rem !important;
     padding-bottom: 0rem !important;
     padding-left: 3rem !important;
     padding-right: 3rem !important;
-    margin-top: -95px !important;
+    margin-top: -45px !important;
 }
 
 /* 🚨 BUTTON STYLING CONFIGURATION */
@@ -311,7 +311,7 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
     font-size: 15px !important;
 }
 
-/* 🚨 LOGIN CONTAINER WIDTH & CENTER BALANCER (FIXED) */
+/* 🚨 LOGIN CONTAINER WIDTH & CENTER BALANCER */
 .login-container {
     background: white;
     padding: 35px 40px !important;
@@ -358,7 +358,6 @@ div.stButton > button[key*="switch"], div.stButton > button[key*="back"], div.st
 
 # Central Gateway Engine
 if st.session_state.screen == "login":
-    # 🚨 1. RATIO FIX FOR BALANCED SaaS STRUCTURE (FIXED)
     left, right = st.columns([1.25, 0.75], gap="small")
     with left:
         logo_col, text_col = st.columns([0.15, 0.85])
@@ -388,14 +387,12 @@ if st.session_state.screen == "login":
         col1, col2 = st.columns([1, 1])
         with col1: st.checkbox("Remember me", key="rem_me_key")
         with col2:
-            # 🚨 FORGOT PASSWORD CONTAINER WIDTH ENABLED
             if st.button("Forgot Password?", key="forgot_nav_trigger_btn", use_container_width=True):
                 st.session_state.screen = "forgot"
                 st.rerun()
 
         st.write("")
         st.write("")
-        # 🚨 LOGIN BUTTON CONTAINER WIDTH ENABLED
         if st.button("🚀 Login", key="login_btn", use_container_width=True):
             if not email or not password: st.error("⚠️ Access Denied: Enter credentials!")
             else:
@@ -420,7 +417,6 @@ if st.session_state.screen == "login":
                 else: st.error("❌ Invalid Email or Password. Please try again.")
 
         st.markdown("<div style='text-align:center; color:gray; margin-top:12px; margin-bottom:5px;'>───── or continue with ─────</div>", unsafe_allow_html=True)
-        # 🚨 SIGNUP BUTTON CONTAINER WIDTH ENABLED
         if st.button("Don't have an account? Sign Up", key="switch_to_signup_btn", use_container_width=True):
             st.session_state.screen = "signup"
             st.rerun()
@@ -501,7 +497,7 @@ elif st.session_state.screen == "authenticated":
     with st.sidebar:
         st.markdown(f"### 🛡️ NutriScan AI System\n👤 **User Active:** `{st.session_state.user_name}`")
         st.write("---")
-        menu = st.sidebar.radio("Navigation Menu",
+        menu = st.radio("Navigation Menu",
                         ["🏠 Home Dashboard", "🥗 Food Analysis", "🧮 BMI Calculator", "🔥 Calorie Tracker",
                          "💧 Water Tracker", "💔 Disease Risk", "🩺 Symptoms & Tests", "💊 Medicines", "📊 Health Analytics",
                          "📜 Food History", "🤖 AI Chatbot", "⚙️ Settings"])
@@ -532,6 +528,7 @@ elif st.session_state.screen == "authenticated":
     if session_focus_food and session_focus_food not in FOOD_DATASET:
         session_focus_food = "pizza"
 
+    # Health Score Engine
     calculated_health_score = 80
     score_msg = "Good"
     if st.session_state.user_bmi < 18.5 or st.session_state.user_bmi > 25.0: calculated_health_score -= 15
@@ -702,7 +699,6 @@ elif st.session_state.screen == "authenticated":
                 st.rerun()
         with col_t2:
             st.metric("Total Recorded Target Intake Today", f"{current_live_calories} / {st.session_state.user_bmr_target} kcal")
-            # 🚨 SYNTAX ERROR FIX: Bracket completely locked now!
             st.progress(min(current_live_calories / st.session_state.user_bmr_target, 1.0))
 
     # 5. 💧 WATER TRACKER
