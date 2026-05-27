@@ -330,7 +330,7 @@ div.stButton > button[key*="forgot_nav"] {
     border-radius: 22px;
     box-shadow: 0px 8px 24px rgba(0,0,0,0.05);
     margin-top: -20px !important;
-    margin-left: -20px !important;
+    margin-left: -30px !important;
     border: 1px solid #f1f5f9;
 }
 
@@ -414,7 +414,7 @@ if st.session_state.screen == "login":
         
         st.markdown("<div style='margin-left:-40px; margin-top:-20px;'>", unsafe_allow_html=True)
         # 🚨 1. HERO IMAGE COMPACT RESIZER (FIXED)
-        render_local_image("hero.png", img_width=760)
+        render_local_image("hero.png", img_width=700)
         st.markdown("</div>", unsafe_allow_html=True)
 
     with right:
