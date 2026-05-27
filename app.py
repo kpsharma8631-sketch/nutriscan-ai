@@ -258,26 +258,28 @@ def find_best_matching_db_key(input_food_string):
 # =========================================================
 st.markdown("""
 <style>
-/* 🚨 REMOVE WHITE HEADER FULLY & OPTIMIZED SPACING CORES (FIXED) */
-header { visibility: hidden !important; display: none !important; }
+/* 🚨 REMOVE WHITE HEADER FULLY & EXTRA STRUCTURAL COMPRESSION (FIXED) */
 [data-testid="stHeader"] { display: none !important; height: 0rem !important; }
 [data-testid="stToolbar"] { display: none !important; }
-header[data-testid="stHeader"] { height: 0rem !important; display: none !important; }
 .main { padding-top: 0rem !important; }
 section[data-testid="stSidebar"] { top: 0 !important; }
+
+/* 🚨 EXTRA FIX FOR LOGO (FIXED) */
+header { visibility: hidden !important; display: none !important; }
+.main .block-container { padding-top: 1rem !important; }
 
 .stApp { background-color: #f8fafc; }
 footer { display: none !important; }
 [data-testid="stSidebarNav"], [data-testid="stSidebarNavItems"] { display: none !important; height: 0px !important; overflow: hidden !important; }
 [data-testid="stSidebarCollapseButton"] { display: flex !important; visibility: visible !important; color: #16a34a !important; background-color: #f0fdf4 !important; border-radius: 50% !important; }
 
-/* 🚨 REPLACED TOP SPACE OVERRIDE - NO COMPRESSION GAPS */
+/* 🚨 RE-ENGINEERED BLOCK CONTAINER AND PADDING ALIGNMENTS (FIXED) */
 .block-container {
     padding-top: 1rem !important;
-    padding-bottom: 0rem !important;
-    padding-left: 3rem !important;
-    padding-right: 3rem !important;
-    margin-top: -45px !important;
+    padding-bottom: 1rem !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    max-width: 100% !important;
 }
 
 /* 🚨 BUTTON STYLING CONFIGURATION */
@@ -497,7 +499,7 @@ elif st.session_state.screen == "authenticated":
     with st.sidebar:
         st.markdown(f"### 🛡️ NutriScan AI System\n👤 **User Active:** `{st.session_state.user_name}`")
         st.write("---")
-        menu = st.radio("Navigation Menu",
+        menu = st.sidebar.radio("Navigation Menu",
                         ["🏠 Home Dashboard", "🥗 Food Analysis", "🧮 BMI Calculator", "🔥 Calorie Tracker",
                          "💧 Water Tracker", "💔 Disease Risk", "🩺 Symptoms & Tests", "💊 Medicines", "📊 Health Analytics",
                          "📜 Food History", "🤖 AI Chatbot", "⚙️ Settings"])
@@ -673,79 +675,4 @@ elif st.session_state.screen == "authenticated":
 
     # 4. 🔥 CALORIE TRACKER
     elif menu == "🔥 Calorie Tracker":
-        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
-        st.markdown("<h2>🔥 Daily Calorie Log & AI Text Assistant Core</h2>", unsafe_allow_html=True)
-        st.write("---")
-
-        st.markdown("<div style='background: white; border: 1px solid #cbd5e1; padding: 25px; border-radius:20px; margin-bottom: 25px;'>", unsafe_allow_html=True)
-        voice_sentence = st.text_input("Type Your Full Meal Consumption Sentence (e.g. 'Maine 2 roti aur daal khai'):", placeholder="🎙 Type what you ate...", key="voice_input_widget")
-        
-        if st.button("🚀 Process & Parse AI Voice Command", key="process_voice_btn"):
-            if voice_sentence.strip() != "":
-                normalized_sentence = voice_sentence.lower()
-                for known_key in FOOD_DATASET.keys():
-                    if known_key.replace("_", " ") in normalized_sentence:
-                        log_manual_calories(st.session_state.user_email, known_key.title().replace("_", " "), FOOD_DATASET[known_key]["calories"])
-                        st.session_state.detected_food = known_key
-                st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
-
-        col_t1, col_t2 = st.columns(2)
-        with col_t1:
-            menu_meal = st.selectbox("Select Meal Category Type", ["Breakfast", "Lunch", "Dinner", "Snacks"])
-            cals = st.number_input("Input Calories (kcal)", min_value=10, max_value=2500, value=300)
-            if st.button("Log Meal Entry Now", key="calorie_log_btn"):
-                log_manual_calories(st.session_state.user_email, menu_meal, cals)
-                st.rerun()
-        with col_t2:
-            st.metric("Total Recorded Target Intake Today", f"{current_live_calories} / {st.session_state.user_bmr_target} kcal")
-            st.progress(min(current_live_calories / st.session_state.user_bmr_target, 1.0))
-
-    # 5. 💧 WATER TRACKER
-    elif menu == "💧 Water Tracker":
-        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
-        st.markdown("<h2>💧 Hydration Assistant Engine</h2>", unsafe_allow_html=True)
-        st.write("---")
-        st.markdown(f"<h4>Progress Bounds: <b>{current_live_water} out of 8 Glasses</b> tracked inside secure DB logs.</h4>", unsafe_allow_html=True)
-        st.progress(min(current_live_water / 8, 1.0))
-
-        wl, wr = st.columns(2)
-        with wl:
-            if st.button("➕ Add 1 Glass (Log Stream)", key="add_water_glass_btn"):
-                update_daily_water_glasses(st.session_state.user_email, 1)
-                st.rerun()
-        with wr:
-            if st.button("➖ Remove 1 Glass (Log Stream)", key="remove_water_glass_btn") and current_live_water > 0:
-                update_daily_water_glasses(st.session_state.user_email, -1)
-                st.rerun()
-
-    # 12. ⚙️ SETTINGS PANEL
-    elif menu == "⚙️ Settings":
-        st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
-        st.markdown("<h2>⚙️ Premium App Configuration Center</h2>", unsafe_allow_html=True)
-        st.write("---")
-        st.markdown("<div class='settings-block-panel'>", unsafe_allow_html=True)
-        set_weight = st.number_input("Update Weight Metric (kg)", min_value=10.0, value=float(st.session_state.get('u_weight_live', 68.0)))
-        set_height = st.number_input("Update Height Metric (cm)", min_value=50.0, value=float(st.session_state.get('u_height_live', 172.0)))
-
-        if st.button("💾 Save Profile Metrics Changes", key="save_metrics_btn"):
-            update_user_metrics_in_db(st.session_state.user_email, set_weight, set_height)
-            st.session_state.u_weight_live = set_weight
-            st.session_state.u_height_live = set_height
-            h_m = set_height / 100.0
-            st.session_state.user_bmi = round(set_weight / (h_m * h_m), 1)
-            st.success("🎉 Biometric metrics updated successfully!")
-            st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
-
-        st.markdown("<div class='settings-block-panel'>", unsafe_allow_html=True)
-        st.markdown("### 💥 Hard Data Purge Protocol")
-        if st.button("💥 Purge All Local Scan History Logs", key="purge_btn"):
-            cursor.execute("DELETE FROM food_history WHERE user_email=?", (st.session_state.user_email,))
-            cursor.execute("DELETE FROM calorie_logs WHERE user_email=?", (st.session_state.user_email,))
-            cursor.execute("DELETE FROM water_logs WHERE user_email=?", (st.session_state.user_email,))
-            conn.commit()
-            st.session_state.detected_food = None
-            st.success("💥 Database tables flushed completely!")
-            st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown("<div class='auth-header-space'></div>
