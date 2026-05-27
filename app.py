@@ -330,6 +330,7 @@ div.stButton > button[key*="forgot_nav"] {
     border-radius: 22px;
     box-shadow: 0px 8px 24px rgba(0,0,0,0.05);
     margin-top: -20px !important;
+    margin-left: -20px !important;
     border: 1px solid #f1f5f9;
 }
 
@@ -400,7 +401,7 @@ div.stButton > button[key*="forgot_nav"] {
 
 # Central Gateway Engine
 if st.session_state.screen == "login":
-    left, right = st.columns([1.25, 0.75], gap="small")
+    left, right = st.columns([1.25, 0.75], gap="medium")
     with left:
         st.markdown("<div style='margin-top:60px;'></div>", unsafe_allow_html=True)
         logo_col, text_col = st.columns([0.15, 0.85])
@@ -409,17 +410,11 @@ if st.session_state.screen == "login":
         st.markdown("<div class='main-heading'>Smart Food Choices,<br><span class='green'>Healthy Life!</span></div>", unsafe_allow_html=True)
         st.markdown("<div class='subtitle'>NutriScan AI analyzes your food, predicts health risks and suggests better choices.</div>", unsafe_allow_html=True)
         
-        st.markdown("<div style='margin-top:30px; margin-left:-20px;'>", unsafe_allow_html=True)
-        c1, c2, c3, c4 = st.columns(4)
-        c1.markdown("<div class='feature-card'>🧠<br><br><b>AI Food<br>Analysis</b></div>", unsafe_allow_html=True)
-        c2.markdown("<div class='feature-card'>❤️<br><br><b>Disease<br>Prediction</b></div>", unsafe_allow_html=True)
-        c3.markdown("<div class='feature-card'>📋<br><br><b>Personalized<br>Recs</b></div>", unsafe_allow_html=True)
-        c4.markdown("<div class='feature-card'>📈<br><br><b>Health<br>Tracking</b></div>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+       
         
         st.markdown("<div style='margin-left:-40px; margin-top:-20px;'>", unsafe_allow_html=True)
         # 🚨 1. HERO IMAGE COMPACT RESIZER (FIXED)
-        render_local_image("hero.png", img_width=520)
+        render_local_image("hero.png", img_width=760)
         st.markdown("</div>", unsafe_allow_html=True)
 
     with right:
