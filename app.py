@@ -436,7 +436,7 @@ if st.session_state.screen == "login":
                 st.session_state.screen = "forgot"
                 st.rerun()
 
-        st.write("")
+        
         st.write("")
         if st.button("🚀 Login", key="login_btn", use_container_width=True):
             if not email or not password: st.error("⚠️ Access Denied: Enter credentials!")
