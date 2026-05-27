@@ -212,10 +212,6 @@ def render_local_image(image_name, img_width=None, use_column=False):
     else:
         if "logo" in image_name:
             st.markdown("<h2 style='font-size:38px; margin:0;'>🥗</h2>", unsafe_allow_html=True)
-        else:
-            st.markdown(
-                "<div style='background:linear-gradient(to right, #f0fdf4, #e2e8f0); height:160px; border-radius:18px; display:flex; align-items:center; justify-content:center; color:#16a34a; font-weight:bold;'>🥞 [ NutriScan AI Premium Brand Graphics Asset ]</div>",
-                unsafe_allow_html=True)
 
 # =========================================================
 # DATASET KEY MAPPER
@@ -242,76 +238,71 @@ def find_best_matching_db_key(input_food_string):
     return None
 
 # =========================================================
-# 🔥 ULTIMATE NATIVE STREAMLIT OVERRIDE CSS (FIXES WHITE SPACE & BUTTONS)
+# 🔥 ULTIMATE NATIVE OVERRIDE (FORCED FULL WIDTH BUTTONS & ZERO PADDING)
 # =========================================================
 st.markdown("""
 <style>
-/* 1. Global Page Padding Eradication (Removes Faltu White Space) */
+/* 1. Eliminate Top Header Blank Padding Completely */
 [data-testid="stHeader"] { display: none !important; }
-.main .block-container { padding-top: 0rem !important; padding-bottom: 1rem !important; max-width: 95% !important; }
+.main .block-container { padding-top: 1.5rem !important; padding-bottom: 1rem !important; max-width: 90% !important; }
 
-/* 2. Brutal Native Button Resizer (Zabardasti Wide and Big Screen Responsive) */
+/* 2. Full Width Native Stretch Buttons Configuration */
 div.stButton > button:first-child {
     width: 100% !important;
     display: block !important;
-    min-height: 52px !important;
-    font-size: 18px !important;
+    min-height: 50px !important;
+    font-size: 16px !important;
     font-weight: 700 !important;
     background: linear-gradient(to right, #16a34a, #22c55e) !important;
     color: white !important;
     border-radius: 12px !important;
     border: none !important;
-    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2) !important;
-    transition: all 0.2s ease-in-out !important;
-}
-div.stButton > button:first-child:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 18px rgba(22, 163, 74, 0.3) !important;
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.15) !important;
 }
 
-/* Secondary Button Link Fix */
+/* Secondary Navigation Buttons Style Reset */
 button[data-testid="baseButton-secondary"] {
     background: #f3f4f6 !important;
     color: #1f2937 !important;
     border: 1px solid #e5e7eb !important;
 }
 
-/* 3. Clean Container Form Layout Box */
+/* 3. Clean Content Blueprint Container Frame */
 .auth-inner-box {
     background-color: #ffffff;
     padding: 35px;
-    border-radius: 20px;
+    border-radius: 24px;
     border: 1px solid #e5e7eb;
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
-    margin-top: 10px;
 }
 
-.logo-text { font-size: 38px; font-weight: 800; color: #111827; margin: 0px; }
+.logo-text { font-size: 38px; font-weight: 800; color: #111827; margin: 0px; display: inline-block; vertical-align: middle; }
 .green { color: #16a34a; }
-.main-heading { font-size: 44px; font-weight: 800; line-height: 1.2; color: #111827; margin-top: 5px; }
-.subtitle { font-size: 16px; color: #4b5563; margin-top: 5px; margin-bottom: 15px; }
+.main-heading { font-size: 42px; font-weight: 800; line-height: 1.2; color: #111827; margin-top: 15px; }
+.subtitle { font-size: 16px; color: #4b5563; margin-top: 8px; margin-bottom: 25px; line-height: 1.5; }
 .feature-card { background: #f0fdf4; padding: 12px; border-radius: 12px; text-align: center; font-weight: 600; font-size: 14px; color: #15803d; }
-.welcome { text-align: center; font-size: 32px; font-weight: 800; color: #111827; margin-bottom: 5px; }
+.welcome { text-align: center; font-size: 32px; font-weight: 800; color: #111827; }
 .subtitle2 { text-align: center; color: #6b7280; font-size: 15px; margin-bottom: 20px; }
 
-/* Dashboard UI Components */
-.dash-card { background: white; padding: 20px 15px; border-radius: 18px; border: 1px solid #e2e8f0; box-shadow: 0px 4px 12px rgba(0,0,0,0.02); text-align: center; margin-bottom: 15px; }
+/* Dashboard Components Framework */
+.dash-card { background: white; padding: 20px 15px; border-radius: 18px; border: 1px solid #e2e8f0; text-align: center; margin-bottom: 15px; }
 .dash-emoji { font-size: 32px; display: block; }
 .dash-val { font-size: 22px; font-weight: 800; color: #0f172a; }
 .dash-lbl { font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; }
 .history-item-card { background: white !important; padding: 15px !important; border-radius: 12px !important; border-left: 5px solid #16a34a !important; margin-bottom: 10px !important; }
+
+/* Native Dropdowns Height Correction */
+.stSelectbox div[data-baseweb="select"] > div { min-height: 45px !important; }
 </style>
 """, unsafe_allow_html=True)
 
-# =========================================================
-# CENTRAL LOGIC ROUTER VIEWPORTS
-# =========================================================
+# Central Gateway Engine
 if st.session_state.screen == "login":
-    left, right = st.columns([1.1, 0.9], gap="large")
+    left, right = st.columns([1.0, 1.0], gap="large")
     with left:
-        st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
         logo_col, text_col = st.columns([0.15, 0.85])
-        with logo_col: render_local_image("logo.png", img_width=60)
+        with logo_col: render_local_image("logo.png", img_width=55)
         with text_col: st.markdown("<div class='logo-text'>NutriScan <span class='green'>AI</span></div>", unsafe_allow_html=True)
         
         st.markdown("<div class='main-heading'>Smart Food Choices,<br><span class='green'>Healthy Life!</span></div>", unsafe_allow_html=True)
@@ -324,8 +315,8 @@ if st.session_state.screen == "login":
         c3, c4 = st.columns(2)
         c3.markdown("<div class='feature-card'>📋 Personalized Recs</div>", unsafe_allow_html=True)
         c4.markdown("<div class='feature-card'>📈 Health Tracking</div>", unsafe_allow_html=True)
-        st.write("")
-        render_local_image("hero.png", use_column=True)
+        
+        # 🛑 HEROS IMAGE SECTION HAS BEEN COMPLETELY WIPED OUT TO PREVENT SQUEEZING DEFECTS
 
     with right:
         st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
@@ -333,9 +324,8 @@ if st.session_state.screen == "login":
         st.markdown("<div class='welcome'>Welcome Back!</div>", unsafe_allow_html=True)
         st.markdown("<div class='subtitle2'>Login to continue your health journey</div>", unsafe_allow_html=True)
         
-        # Native Input Text Fields
-        email = st.text_input("Email", placeholder="📧 Enter your registered email", label_visibility="visible", key="login_email").strip()
-        password = st.text_input("Password", type="password", placeholder="🔒 Enter secure credential password", label_visibility="visible", key="login_pass").strip()
+        email = st.text_input("Email", placeholder="📧 Enter your registered email", key="login_email").strip()
+        password = st.text_input("Password", type="password", placeholder="🔒 Enter secure password", key="login_pass").strip()
         
         st.write("")
         col1, col2 = st.columns([1, 1])
@@ -399,13 +389,13 @@ elif st.session_state.screen == "forgot":
 elif st.session_state.screen == "signup":
     left, right = st.columns([1.0, 1.0], gap="large")
     with left:
-        st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
         logo_col_s, text_col_s = st.columns([0.15, 0.85])
-        with logo_col_s: render_local_image("logo.png", img_width=60)
+        with logo_col_s: render_local_image("logo.png", img_width=55)
         with text_col_s: st.markdown("<div class='logo-text'>NutriScan <span class='green'>AI</span></div>", unsafe_allow_html=True)
         st.markdown("<div class='main-heading'>Join Us For A<br><span class='green'>Healthy Journey!</span></div>", unsafe_allow_html=True)
         st.write("")
-        render_local_image("hero.png", use_column=True)
+        # 🛑 IMAGE REMOVED FROM SIGNUP LEFT FOR PERFECT BALANCE
 
     with right:
         st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
@@ -433,7 +423,7 @@ elif st.session_state.screen == "signup":
                 st.session_state.screen = "login"
                 st.rerun()
 
-        if st.button(" Don't have an account? Back to Login", key="back_login_btn"):
+        if st.button("Back to Login Window", key="back_login_btn"):
             st.session_state.screen = "login"
             st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
@@ -555,7 +545,7 @@ elif st.session_state.screen == "authenticated":
             st.session_state.user_bmi = round(bmi, 1)
             st.metric(label="Calculated BMI", value=f"{bmi:.2f}")
 
-    # 4. 🔥 CALORIE TRACKER (AI STATEMENT ENGINE BOX)
+    # 4. 🔥 CALORIE TRACKER
     elif menu == "🔥 Calorie Tracker":
         st.markdown("<h2>🔥 Daily Calorie Manual Interface & Text AI Command</h2>", unsafe_allow_html=True)
         st.write("---")
