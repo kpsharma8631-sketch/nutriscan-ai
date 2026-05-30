@@ -19,29 +19,67 @@ st.set_page_config(
 )
 
 # =========================================================
-# 🎯 GEMINI MULTI-API KEY FAILOVER SYSTEM
+# 🎯 GEMINI 6-MULTIPLE API KEY FAILOVER POOL ROUTER SYSTEM
 # =========================================================
-# Secure environment variable check falls back to a list pool
-ENV_KEY = os.environ.get("GEMINI_API_KEY", "")
-
-GEMINI_KEYS_POOL = [
-    ENV_KEY if ENV_KEY else "YOUR_GEMINI_API_KEY_1",
-    "YOUR_GEMINI_API_KEY_2",
-    "YOUR_GEMINI_API_KEY_3"
+# Agr upar ke tarike na kaam karein, toh tum direct code me keys yahan edit kar sakte ho.
+# Lekin yaad se GitHub pe push karne se pehle inhein default state ("YOUR_API_KEY_...") par chhod dena.
+GEMINI_KEYS_CODE_FALLBACK = [
+    "YOUR_API_KEY_1",
+    "YOUR_API_KEY_2",
+    "YOUR_API_KEY_3",
+    "YOUR_API_KEY_4",
+    "YOUR_API_KEY_5",
+    "YOUR_API_KEY_6"
 ]
 
+GEMINI_KEYS_POOL = []
+
+# Har ek 6 nodes ke liye dynamic scan framework
+for i in range(1, 7):
+    key_val = ""
+    # 1. Sabse pehle Streamlit local secrets test karenge
+    try:
+        if f"GEMINI_API_KEY_{i}" in st.secrets:
+            key_val = st.secrets[f"GEMINI_API_KEY_{i}"]
+    except Exception:
+        pass
+    
+    # 2. Agar secrets me nahi mila toh system variables me check karenge
+    if not key_val:
+        key_val = os.environ.get(f"GEMINI_API_KEY_{i}", "")
+        
+    # 3. Agar wahan bhi empty hai toh, dynamic fallback check (single key option)
+    if i == 1 and not key_val:
+        try:
+            if "GEMINI_API_KEY" in st.secrets:
+                key_val = st.secrets["GEMINI_API_KEY"]
+        except Exception:
+            pass
+        if not key_val:
+            key_val = os.environ.get("GEMINI_API_KEY", "")
+            
+    # 4. Final step: check fallback index values inside code
+    if not key_val:
+        fallback_key = GEMINI_KEYS_CODE_FALLBACK[i-1]
+        if fallback_key and not fallback_key.startswith("YOUR_API"):
+            key_val = fallback_key
+            
+    # Key array list me append karenge
+    GEMINI_KEYS_POOL.append(key_val)
+
+
 def get_live_gemini_client():
+    # Active nodes ko sequentially test karne ka system loop
     for idx, key in enumerate(GEMINI_KEYS_POOL):
-        if key and not key.startswith("YOUR_GEMINI"):
+        if key and not key.startswith("YOUR_API") and key != "":
             try:
-                # Initializing modern genai Client
                 st.session_state[f"key_status_{idx}"] = "Active"
                 return genai.Client(api_key=key)
             except Exception:
                 st.session_state[f"key_status_{idx}"] = "Exhausted"
                 continue
-    # Standard fallback
-    return genai.Client(api_key=os.environ.get("GEMINI_API_KEY", "dummy_key"))
+    # Standard dummy fallback taaki engine crash na ho
+    return genai.Client(api_key="dummy_key_if_nothing_works")
 
 # =========================================================
 # DATABASE SETUP & SCHEMA MAPPING (RELATIVE PATH)
@@ -568,9 +606,10 @@ elif st.session_state.screen == "authenticated":
                 unsafe_allow_html=True)
         st.write("---")
 
+        # 6 ports load balancer UI Status grid update
         st.write("#### 🛡️ Load Balancer Security Ledger Status:")
-        k_cols = st.columns(5)
-        for i in range(5):
+        k_cols = st.columns(6)
+        for i in range(6):
             status_node = st.session_state.get(f"key_status_{i}", "Standby / Ready")
             k_cols[i].info(f"🔑 Node {i + 1}: {status_node}")
 
@@ -659,9 +698,8 @@ elif st.session_state.screen == "authenticated":
                                     f"🥞 **{item['name'].title().replace('_', ' ')}** ({item['qty']}) — `{item['calories']} kcal` -> <span style='color:#16a34a; font-weight:bold;'>🟢 Healthy Choice</span>",
                                     unsafe_allow_html=True)
                             elif db_item_info["risk_level"] == "Medium Risk":
-                                st.markdown(
-                                    f"🥞 **{item['name'].title().replace('_', ' ')}** ({item['qty']}) — `{item['calories']} kcal` -> <span style='color:#ea580c; font-weight:bold;'>🟠 Moderate (Watch Portion)</span>",
-                                    unsafe_allow_html=True)
+                                Indian_hindi_p = f"🥞 **{item['name'].title().replace('_', ' ')}** ({item['qty']}) — `{item['calories']} kcal` -> <span style='color:#ea580c; font-weight:bold;'>🟠 Moderate (Kam khao)</span>"
+                                st.markdown(Indian_hindi_p, unsafe_allow_html=True)
                             else:
                                 st.markdown(
                                     f"🥞 **{item['name'].title().replace('_', ' ')}** ({item['qty']}) — `{item['calories']} kcal` -> <span style='color:#dc2626; font-weight:bold;'>🔴 Unhealthy (High Risk)</span>",
@@ -669,7 +707,7 @@ elif st.session_state.screen == "authenticated":
                         else:
                             if "chutney" in item_raw_name or "sauce" in item_raw_name or "bhaji" in item_raw_name:
                                 st.markdown(
-                                    f"🥞 **{item['name'].title().replace('_', ' ')}** ({item['qty']}) — `{item['calories']} kcal` -> <span style='color:#ea580c; font-weight:bold;'>🟠 Moderate (High Sodium/Fat)</span>",
+                                    f"🥞 **{item['name'].title().replace('_', ' ')}** ({item['qty']}) — `{item['calories']} kcal` -> <span style='color:#ea580c; font-weight:bold;'>🟠 Moderate (Excess oil/sodium)</span>",
                                     unsafe_allow_html=True)
                             else:
                                 st.markdown(
@@ -1044,7 +1082,7 @@ elif st.session_state.screen == "authenticated":
                 <div class='info-card'>
                     <strong>Patient Identity Token Name:</strong> {st.session_state.user_name} ({st.session_state.user_email})<br>
                     <strong>Biometric Calibration:</strong> Height: {st.session_state.get('u_height_live', 172.0)} cm | Weight: {st.session_state.get('u_weight_live', 68.0)} kg | BMI Node: {st.session_state.user_bmi}<br>
-                    <strong>Target Cap Bounds Configuration:</strong> Controlled Daily Ceiling Limit Goal: <b>{st.session_state.user_bmr_target} Kcal</b> | Ingested Today: <b>{current_live_calories} Kcal</b>
+                    <strong>Target Cap Bounds Configuration:</strong> Controlled Daily Ceiling Limit Goal: <b>{st.session_state.user_bmr_target} KCal</b> | Ingested Today: <b>{current_live_calories} KCal</b>
                 </div>
 
                 <table class='stats-grid-table'>
@@ -1271,3 +1309,4 @@ elif st.session_state.screen == "authenticated":
             st.success("💥 Database tables flushed completely!")
             st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
+        }
