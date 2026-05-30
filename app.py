@@ -1309,4 +1309,4 @@ elif st.session_state.screen == "authenticated":
             st.success("💥 Database tables flushed completely!")
             st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
-        }
+        
