@@ -21,8 +21,6 @@ st.set_page_config(
 # =========================================================
 # 🎯 GEMINI 6-MULTIPLE API KEY FAILOVER POOL ROUTER SYSTEM
 # =========================================================
-# Agr upar ke tarike na kaam karein, toh tum direct code me keys yahan edit kar sakte ho.
-# Lekin yaad se GitHub pe push karne se pehle inhein default state ("YOUR_API_KEY_...") par chhod dena.
 GEMINI_KEYS_CODE_FALLBACK = [
     "YOUR_API_KEY_1",
     "YOUR_API_KEY_2",
@@ -34,21 +32,17 @@ GEMINI_KEYS_CODE_FALLBACK = [
 
 GEMINI_KEYS_POOL = []
 
-# Har ek 6 nodes ke liye dynamic scan framework
 for i in range(1, 7):
     key_val = ""
-    # 1. Sabse pehle Streamlit local secrets test karenge
     try:
         if f"GEMINI_API_KEY_{i}" in st.secrets:
             key_val = st.secrets[f"GEMINI_API_KEY_{i}"]
     except Exception:
         pass
     
-    # 2. Agar secrets me nahi mila toh system variables me check karenge
     if not key_val:
         key_val = os.environ.get(f"GEMINI_API_KEY_{i}", "")
         
-    # 3. Agar wahan bhi empty hai toh, dynamic fallback check (single key option)
     if i == 1 and not key_val:
         try:
             if "GEMINI_API_KEY" in st.secrets:
@@ -58,18 +52,15 @@ for i in range(1, 7):
         if not key_val:
             key_val = os.environ.get("GEMINI_API_KEY", "")
             
-    # 4. Final step: check fallback index values inside code
     if not key_val:
         fallback_key = GEMINI_KEYS_CODE_FALLBACK[i-1]
         if fallback_key and not fallback_key.startswith("YOUR_API"):
             key_val = fallback_key
             
-    # Key array list me append karenge
     GEMINI_KEYS_POOL.append(key_val)
 
 
 def get_live_gemini_client():
-    # Active nodes ko sequentially test karne ka system loop
     for idx, key in enumerate(GEMINI_KEYS_POOL):
         if key and not key.startswith("YOUR_API") and key != "":
             try:
@@ -78,7 +69,6 @@ def get_live_gemini_client():
             except Exception:
                 st.session_state[f"key_status_{idx}"] = "Exhausted"
                 continue
-    # Standard dummy fallback taaki engine crash na ho
     return genai.Client(api_key="dummy_key_if_nothing_works")
 
 # =========================================================
@@ -255,7 +245,6 @@ def render_local_image(image_name, img_width=None, use_column=False):
 # BULLETPROOF EXACT DATASET KEY-MAPPER
 # =========================================================
 def get_clean_macro_integer(macros_dict, key_name):
-    """Directly extracts numeric values matching database.py keys style layout"""
     if key_name == "protein":
         return int(macros_dict.get("Protein", macros_dict.get("protein", 0)))
     if key_name == "carbs":
@@ -265,7 +254,6 @@ def get_clean_macro_integer(macros_dict, key_name):
     return 0
 
 def find_best_matching_db_key(input_food_string):
-    """Extracts raw key identities from multi-word strings"""
     clean_target = str(input_food_string).lower().strip()
     if "thali (" in clean_target:
         for db_key in FOOD_DATASET.keys():
@@ -606,14 +594,13 @@ elif st.session_state.screen == "authenticated":
                 unsafe_allow_html=True)
         st.write("---")
 
-        # 6 ports load balancer UI Status grid update
         st.write("#### 🛡️ Load Balancer Security Ledger Status:")
         k_cols = st.columns(6)
         for i in range(6):
             status_node = st.session_state.get(f"key_status_{i}", "Standby / Ready")
             k_cols[i].info(f"🔑 Node {i + 1}: {status_node}")
 
-    # 2. 🥗 FOOD ANALYSIS (EXCLUSIVELY ADVANCED MULTIPLE MULTIMODAL SCANNER)
+    # 2. 🥗 FOOD ANALYSIS
     elif menu == "🥗 Food Analysis":
         st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
         st.markdown("<h2>🥗 Precision AI Food Scanner & Multimodal Thali Core</h2>", unsafe_allow_html=True)
@@ -668,7 +655,6 @@ elif st.session_state.screen == "authenticated":
                             st.success(f"🎉 Thali Compound Scan Matrix Logged inside 1 Single History Entry!")
                             st.rerun()
                         except Exception as ex:
-                            # Robust Mock Fallback
                             log_food_scanned(st.session_state.user_email,
                                              "Thali (idli, tomato_chutney, coconut_chutney)", 400)
                             st.session_state.detected_food = "idli"
@@ -885,7 +871,7 @@ elif st.session_state.screen == "authenticated":
         if is_new_user_flag:
             st.info("📂 Risk models are empty. Log food entries inside the Scanner first!")
         else:
-            food_info = FOOD_DATASET[session_focus_food]
+            food_info = FOOD_DATASET.get(session_focus_food, {"risk_level": "Low Risk", "risk_msg": "Clear Profile.", "diseases": []})
             st.warning(
                 f"Based on your last analyzed item category (**{db_last_food if db_last_food else session_focus_food.replace('_', ' ').title()}**), database structural mapping highlights:")
 
@@ -925,7 +911,7 @@ elif st.session_state.screen == "authenticated":
         if is_new_user_flag:
             st.info("📂 Diagnostic layers waiting for scanned metadata assets.")
         else:
-            food_info = FOOD_DATASET[session_focus_food]
+            food_info = FOOD_DATASET.get(session_focus_food, {"risk_level": "Low Risk", "tests": []})
             st.info(
                 f"Showing clinical verification tracking parameters for active focus target: **{db_last_food if db_last_food else session_focus_food.replace('_', ' ').title()}**")
 
@@ -936,8 +922,7 @@ elif st.session_state.screen == "authenticated":
                         f"🧪 **{test.get('name', 'Diagnostic Assessment Node')}**: {test.get('desc', 'Biometric verification baseline check point.')}")
                 st.write("---")
                 st.write("#### 🚨 Acute Symptomatic Response Manifestations:")
-                if "high" in food_info[
-                    "risk_level"].lower() or "pizza" in session_focus_food or "burger" in session_focus_food or "pakode" in session_focus_food:
+                if "high" in food_info["risk_level"].lower() or "pizza" in session_focus_food or "burger" in session_focus_food or "pakode" in session_focus_food:
                     st.error(
                         "• **Gastrointestinal Tract Burn:** Upper GI tract inflammation due to highly recycled oil interactions.\n\n• **Insulin Spike Fatigue:** Immediate extreme pancreatic insulin dispatch inducing systemic lethargy complexes.")
                 else:
@@ -955,13 +940,12 @@ elif st.session_state.screen == "authenticated":
         if is_new_user_flag:
             st.info("📂 Counteractive pharmacology data stream is uninitialized for clean records.")
         else:
-            food_info = FOOD_DATASET[session_focus_food]
+            food_info = FOOD_DATASET.get(session_focus_food, {"risk_level": "Low Risk"})
             st.info(
                 f"Showing localized therapeutic parameters recommended for item context: **{db_last_food if db_last_food else session_focus_food.replace('_', ' ').title()}**")
 
             st.write("### 🌿 Pharmacological Defensive Guidelines Matrix:")
-            if food_info["risk_level"] in ["High Risk",
-                                           "Medium Risk"] or "pizza" in session_focus_food or "burger" in session_focus_food or "pakode" in session_focus_food:
+            if food_info["risk_level"] in ["High Risk", "Medium Risk"] or "pizza" in session_focus_food or "burger" in session_focus_food or "pakode" in session_focus_food:
                 st.error("⚠️ **Active Restorative Counteractions Required:**")
                 st.write(
                     "• **Proton Pump Blockers (PPIs):** 1x Capsule Pantoprazole 40mg if chest cavity hyperacidity or bile reflux escalates due to deep lipid processing factors.")
@@ -974,7 +958,7 @@ elif st.session_state.screen == "authenticated":
                 st.write(
                     "• **Micronutrient Optimization:** No dynamic pharmaceutical balancing agents required. 1x Daily Zinc/Multivitamin trace tablet is approved to sustain standard metabolic loop longevity.")
 
-    # 9. 📊 HEALTH ANALYTICS
+    # 9. 📊 HEALTH ANALYTICS (🔧 CRITICAL FIX PLACED HERE)
     elif menu == "📊 Health Analytics":
         st.markdown("<div class='auth-header-space'></div>", unsafe_allow_html=True)
         st.markdown("<h2>📊 Premium Health History Overview & Analytical Trends</h2>", unsafe_allow_html=True)
@@ -994,7 +978,8 @@ elif st.session_state.screen == "authenticated":
                     f"<div class='dash-card' style='border-top:5px solid #3b82f6;'><span style='font-size:25px;'>❤️</span><br><div class='dash-lbl'>Calculated Health Index</div><div class='dash-val'>{calculated_health_score} / 100 ({score_msg})</div></div>",
                     unsafe_allow_html=True)
             with m_c3:
-                food_meta = FOOD_DATASET[session_focus_food]
+                # 🛠️ FIXED: Added safe .get() layout with dictionary fallback to avoid KeyError!
+                food_meta = FOOD_DATASET.get(session_focus_food, {})
                 risk_indicator_text = food_meta.get("risk_level", "Low Risk")
                 indicator_color = "#16a34a" if "low" in risk_indicator_text.lower() else "#ea580c" if "medium" in risk_indicator_text.lower() else "#dc2626"
                 st.markdown(
@@ -1006,8 +991,7 @@ elif st.session_state.screen == "authenticated":
             st.write("### 🛑 Pathological Condition Vector Overview")
             st.markdown("<div class='settings-block-panel' style='border-left: 5px solid #dc2626;'>",
                         unsafe_allow_html=True)
-            if "high" in food_meta.get("risk_level",
-                                       "").lower() or "pizza" in session_focus_food or "burger" in session_focus_food or "pakode" in session_focus_food:
+            if "high" in food_meta.get("risk_level", "").lower() or "pizza" in session_focus_food or "burger" in session_focus_food or "pakode" in session_focus_food:
                 st.markdown(
                     "<h4>🚨 Active Risk Condition Profile Detected: <b>Obesity & Lipid Acceleration Node</b></h4>",
                     unsafe_allow_html=True)
@@ -1046,8 +1030,7 @@ elif st.session_state.screen == "authenticated":
             if not test_rows: test_rows = "<tr><td colspan='2'>🔬 Monitoring constraints safe. Regular biometric tracking approved.</td></tr>"
 
             med_string = "General daily trace micronutrient baseline softgels."
-            if "high" in food_meta.get("risk_level",
-                                       "").lower() or "pizza" in session_focus_food or "burger" in session_focus_food or "pakode" in session_focus_food:
+            if "high" in food_meta.get("risk_level", "").lower() or "pizza" in session_focus_food or "burger" in session_focus_food or "pakode" in session_focus_food:
                 med_string = "Proton Pump Inhibitors (Pantoprazole 40mg Core) / Supportive Alkaline Digestive Enzyme Gel syrups."
 
             overflow_html_alert = "<tr><td colspan='2' style='color:#15803d; font-weight:bold;'>🌱 Cap Bounds Secure: Active daily caloric ledger tracks inside threshold parameters.</td></tr>"
@@ -1309,4 +1292,3 @@ elif st.session_state.screen == "authenticated":
             st.success("💥 Database tables flushed completely!")
             st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
-        
